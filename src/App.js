@@ -3,6 +3,7 @@ import axios from 'axios';
 import logo from './logo.png';
 import './App.css';
 import Chart from './components/Chart';
+import Card from './components/Casescard';
 
 class App extends Component {
   state = {
@@ -16,7 +17,7 @@ class App extends Component {
         backgroundColor: 'rgba(255, 99, 132, 0.6)',
 
       },
-    
+
       {
         label: 'Deaths',
 
@@ -34,10 +35,22 @@ class App extends Component {
         backgroundColor: 'rgba(255, 99, 132, 0.6)',
 
       }
-    
-    ],
+
+      ],
 
       options: {
+
+        legend: {
+          display: false
+        },
+
+        tooltips: {
+          callbacks: {
+            label: function (tooltipItem) {
+              return tooltipItem.yLabel;
+            }
+          }
+        },
         scales: {
           yAxes: [{
             stacked: true
@@ -47,9 +60,17 @@ class App extends Component {
 
       dimensions: {
         width: 1800,
-        height: 950
+        height: 340
       }
 
+    },
+
+
+    cardsData: {
+      totalCases: 0,
+      activeCases: 0,
+      deceased: 0,
+      discharged: 0
     }
   }
 
@@ -72,7 +93,7 @@ class App extends Component {
       let i = 0;
 
       for (let [key, value] of Object.entries(country)) {
-        if (value.confirmed != 0){
+        if (value.confirmed != 0) {
           confirmedCases[i] = value.confirmed;
           deaths[i] = value.deaths;
           recovered[i] = value.recovered;
@@ -81,7 +102,6 @@ class App extends Component {
           i += 1;
         }
       }
-      console.log(backgroundColors);
 
       this.setState({
         chartData: {
@@ -96,7 +116,7 @@ class App extends Component {
             backgroundColor: backgroundColors,
 
           },
-        
+
           {
             label: 'Deaths',
 
@@ -114,10 +134,21 @@ class App extends Component {
             backgroundColor: backgroundColors,
 
           }
-        
-        ],
+
+          ],
 
           options: {
+
+            legend: {
+              display: false
+            },
+            tooltips: {
+              callbacks: {
+                label: function (tooltipItem) {
+                  return tooltipItem.yLabel;
+                }
+              }
+            },
             scales: {
               yAxes: [{
                 stacked: true
@@ -127,11 +158,19 @@ class App extends Component {
 
           dimensions: {
             width: 1800,
-            height: 950
+            height: 340
           }
 
-        }
+        },
 
+
+        cardsData: {
+          totalCases: confirmedCases[confirmedCases.length-1],
+          activeCases: confirmedCases[confirmedCases.length-1] - recovered[recovered.length-1] - deaths[deaths.length-1],
+          deceased: deaths[deaths.length-1],
+          discharged: recovered[recovered.length-1],
+          percentageActiveCases: 2
+        }
       })
     };
     xhr.send();
@@ -140,36 +179,75 @@ class App extends Component {
 
 
   render() {
-
+console.log((this.state.cardsData.activeCases - (this.state.cardsData.deceased + this.state.cardsData.discharged)));
 
     return (
       <div className="App">
-       
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1>
-           COVID-19 Cases in Greece
+
+        <img src={logo} className="App-logo" alt="logo" />
+        <h1>
+          COVID-19 Cases in Greece
         </h1>
 
 
 
-<p>Total Cases Line Chart</p>
-    
-          <Chart
-          
-            type='Line'
-            width={this.state.chartData.dimensions.width}
-            height={this.state.chartData.dimensions.height}
-            backgroundcolor={this.state.chartData.datasets[0].backgroundColor}
-            label={this.state.chartData.datasets[0].label}
-            data={this.state.chartData}
-            options={{
-              
-              maintainAspectRatio: false
-            }}/>
-
-
+        <p>Total Cases Line Chart</p>
 
        
+        <div className='cardsContainer'>
+          <Card
+            title="Total Cases"
+            metrics={this.state.cardsData.totalCases}
+            class="card totalCases"
+          />
+
+          <Card
+            title="Active Cases"
+            metrics={this.state.cardsData.activeCases}
+            percentage={( this.state.cardsData.activeCases * 100 / this.state.cardsData.totalCases).toFixed(2)}
+            class="card activeCases"
+          />
+
+          <Card
+            title="Deceased"
+            metrics={this.state.cardsData.deceased}
+            percentage={( this.state.cardsData.deceased * 100 / this.state.cardsData.totalCases).toFixed(2)}
+            class="card deceased"
+          />
+
+          <Card
+            title="Discharged"
+            metrics={this.state.cardsData.discharged}
+            percentage={(( this.state.cardsData.discharged * 100 / this.state.cardsData.totalCases).toFixed(2))}
+            class="card discharged"
+          />
+
+        </div>
+
+        <Chart
+
+type='Line'
+width={this.state.chartData.dimensions.width}
+height={this.state.chartData.dimensions.height}
+backgroundcolor={this.state.chartData.datasets[0].backgroundColor}
+label={this.state.chartData.datasets[0].label}
+data={this.state.chartData}
+options={{
+  legend: {
+    display: false
+  },
+
+  tooltips: {
+    callbacks: {
+      label: function (tooltipItem) {
+        return tooltipItem.yLabel;
+      }
+    }
+  },
+  maintainAspectRatio: false
+}} />
+
+
       </div>
     );
   }
