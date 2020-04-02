@@ -12,7 +12,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+    animation: App-logo-spin infinite 420s linear;
   }
 }
 
@@ -35,7 +35,33 @@
   margin: 20px 0;
 }
 
+.App{
+  margin: 0;
+ width: 100vw;
+  max-width: 2457px;
+}
 
+.mainContainer{
+  display: flex;
+}
+
+.countryList{
+  flex-basis: 10vw;
+  align-self: flex-start;
+  max-height: 52vw;
+  overflow-y:  scroll;
+}
+
+.countryList button{
+  width: 96%;
+  margin: 5px auto;
+  padding: 15px 0;
+}
+
+.chartContainer{
+  flex-basis: 80%;
+  margin: 0 auto;
+}
 
 
 @keyframes App-logo-spin {
