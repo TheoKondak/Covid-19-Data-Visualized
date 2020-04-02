@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import { Line, Doughnut} from 'react-chartjs-2';
+import { Line, Doughnut, Bar} from 'react-chartjs-2';
+import "./Chart.css";
 
 
 class Chart extends Component {
@@ -17,13 +18,18 @@ class Chart extends Component {
             <div className="Line">
   
         <Line
-          width={this.props.width}
-          height={this.props.height}
+          // width={this.props.width}
+          // height={this.props.height}
           backgroundcolor={this.props.backgroundcolor}
           label={this.props.label}
           data={this.props.data}
           options={{
-            maintainAspectRatio: false
+            
+            title: {
+              display: this.props.display,
+              text: this.props.text
+            },
+
           }}
         />
     </div>
@@ -34,7 +40,7 @@ class Chart extends Component {
 
         return (
             
-            <div className="Line">
+            <div className="Doughnut">
   
         <Doughnut
           width={this.props.width}
@@ -49,6 +55,28 @@ class Chart extends Component {
     </div>
 
         )
+
+    }
+
+    else if (this.props.type == 'Bar'){
+
+      return (
+            
+        <div className="Doughnut">
+
+    <Bar
+      width={this.props.width}
+      height={this.props.height}
+      backgroundcolor={this.props.backgroundcolor}
+      label={this.props.label}
+      data={this.props.data}
+      options={{
+        maintainAspectRatio: false
+      }}
+    />
+</div>
+
+    )
 
     }
 
