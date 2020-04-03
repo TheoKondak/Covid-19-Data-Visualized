@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import logo from './logo.png';
 import './App.css';
-import Chart from './components/Chart';
-import Card from './components/Casescard';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+// Components
+import Chart from './components/Chart/Chart';
+import Card from './components/Casecards/Casescard';
 import Countrylist from './components/Countrylist/Countrylist.js';
 
 class App extends Component {
@@ -125,10 +128,9 @@ class App extends Component {
     xhr.responseType = 'json';
     xhr.onload = () => {
 
-      let country = [...xhr.response.US];
-      // let countryList = Object.keys(xhr.response);
+      let defaultCountry = [...xhr.response.US];
       let countryList = xhr.response;
-      let countryId = [];
+      let countryId = [0];
       let confirmedCases = [];
       let activeCases = [];
       let deaths = [];
@@ -138,7 +140,7 @@ class App extends Component {
       let dataPosition = 0;
 
       // Create Country List Object with ID, Country Name , Country Data
-      let countryListArray = [{countryId: 12, countryName: 'Italy', countryData: country }];
+      let countryListArray = [];
       let itterator = 0;
       for (let countryName in countryList) {
         countryListArray.push({ countryId: itterator, countryName: countryName, countryData: countryList[countryName] });
@@ -147,19 +149,115 @@ class App extends Component {
 
       // Fetched Data Calculations
       // Calculate for Selected Country
-      for (let [key, value] of Object.entries(country)) {
+      for (let [key, value] of Object.entries(defaultCountry)) {
         if (value.recovered != 0 || value.deaths != 0) { // Start Displaying Since the first Death OR the first recovered occured
           confirmedCases[dataPosition] = value.confirmed;
           deaths[dataPosition] = value.deaths;
           recovered[dataPosition] = value.recovered;
           // backgroundColors[dataPosition] = "rgba(" + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + ",0.2" + ")";
           labels[dataPosition] = value.date;
-          // activeCases[dataPosition] =  confirmedCases[dataPosition] - (recovered[dataPosition] + deaths[dataPosition]);
           dataPosition += 1;
         }
       }
 
       this.setState({
+        //Set Default Country State
+        chartDataTotalCases: {
+
+          labels: labels,
+      
+          datasets: [
+            {
+              label: 'Confirmed Cases',
+              data: confirmedCases,
+              backgroundColor: 'rgba(65,131,196,0.4)',
+              hidden: false
+            }],
+      
+          options: {
+            title: {
+              display: true,
+              text: 'Confirmed Cases'
+            },
+          }
+        },
+      
+        chartDataDeathsVsRecovered: {
+      
+          labels: labels,
+      
+          datasets: [
+            {
+              label: 'Confirmed Cases',
+              data: confirmedCases,
+              backgroundColor: 'rgba(65,131,196,0.4)',
+              hidden: true
+            },
+      
+            {
+              label: 'Deaths',
+              data: deaths,
+              // backgroundColor: backgroundColors,
+              backgroundColor: 'rgba(249, 54, 80, 0.2)'
+            },
+      
+            {
+              label: 'Recovered',
+              data: recovered,
+              // backgroundColor: backgroundColors,
+              backgroundColor: 'rgba(249, 254, 239, 0.9)'
+            }
+      
+          ],
+          options: {
+            title: {
+              display: true,
+              text: 'Recoveries VS Deaths'
+            },
+          },
+      
+        },
+      
+        chartDataActiveCasesLogarithmic: {
+      
+          labels: labels,
+      
+          datasets: [
+            {
+              label: 'Active Cases (Logarithmic)',
+              data: activeCases,
+              backgroundColor: 'rgba(65,131,196,0.4)',
+              hidden: false
+            }],
+      
+          options: {
+            title: {
+              display: true,
+              text: 'Confirmed Cases'
+            },
+            scales: {
+              yAxes: [{
+                type: 'logarithmic'
+              }]
+            }
+          },
+      
+        },
+      
+        cardsData: {
+          totalCasesWorldWide: 1,
+          activeCasesWorldWide: 1,
+          deceasedWordlWide: 1,
+          dischargedWorldWide: 1,
+          totalCases: confirmedCases[confirmedCases.length - 1],
+          activeCases: confirmedCases[confirmedCases.length - 1] - recovered[recovered.length - 1] - deaths[deaths.length - 1],
+          deceased: deaths[deaths.length - 1],
+          discharged: recovered[recovered.length - 1],
+          newCases: confirmedCases[confirmedCases.length-1] - confirmedCases[confirmedCases.length-2],
+          percentageActiveCases: 2
+        },
+
+        countryName: 'USA',
         countryList: countryListArray
       })
     };
@@ -177,7 +275,7 @@ class App extends Component {
     let backgroundColors = [];
     let dataPosition = 0;
 
-
+    
       // Fetched Data Calculations
       // Calculate for Selected Country
       for (let [key, value] of Object.entries(countryData)) {
@@ -193,8 +291,6 @@ class App extends Component {
       }
 
 this.setState({
-  
-
 
   chartDataTotalCases: {
 
@@ -287,8 +383,11 @@ this.setState({
     activeCases: confirmedCases[confirmedCases.length - 1] - recovered[recovered.length - 1] - deaths[deaths.length - 1],
     deceased: deaths[deaths.length - 1],
     discharged: recovered[recovered.length - 1],
+    newCases: confirmedCases[confirmedCases.length-1] - confirmedCases[confirmedCases.length-2],
     percentageActiveCases: 2
-  }
+  },
+
+  countryName: countryName
 
 })
 
@@ -320,7 +419,7 @@ this.setState({
       
               <img src={logo} className="App-logo" alt="logo" />
               <h1>
-                COVID-19 Cases
+                COVID-19 Cases in {this.state.countryName}
               </h1>
       
                 <div className='cardsContainer'>
@@ -328,6 +427,13 @@ this.setState({
                     title="Total Cases"
                     metrics={this.state.cardsData.totalCases}
                     class="card totalCases"
+                  />
+
+                  <Card
+                    title="New Cases in the past 24 Hours"
+                    metrics={this.state.cardsData.newCases}
+                    percentage={(this.state.cardsData.newCases * 100 / this.state.cardsData.totalCases).toFixed(2)}
+                    class="card newCases"
                   />
       
                   <Card
@@ -353,7 +459,7 @@ this.setState({
       
                 </div>
       
-                <p>Confirmed Cases</p>
+               
       
       
                 <div className='chartsContainer'>

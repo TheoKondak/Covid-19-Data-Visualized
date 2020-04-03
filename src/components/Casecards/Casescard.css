@@ -1,7 +1,9 @@
 .cardsContainer{
     display: flex;
-    justify-content: space-between;
-    
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 1600px;
+    margin: 0 auto;
 }
 
 .totalCases .cardPercentage{
@@ -9,7 +11,7 @@
 }
 
 .card{
-    flex-basis: 20%;
+    flex-basis: 18%;
     padding: 5px 10px;
     border: 1px solid #666;
     border-radius: 2px;
