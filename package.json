@@ -2,7 +2,7 @@
   "name": "reactcharts",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://TheoKondak.github.io/Covid-19-Data-Visualized/",
+  "homepage": "http://TheoKondak.github.io/covid-19-cata-visualized/",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -15,7 +15,8 @@
     "react-chartjs-2": "^2.9.0",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
-    "react-select": "^3.1.0"
+    "react-select": "^3.1.0",
+    "reactjs-popup": "^1.5.0"
   },
   "scripts": {
     "predeploy": "npm run build",

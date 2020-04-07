@@ -1,8 +1,8 @@
-.App {
+/* .App {
   text-align: center;
   max-width: 1200px;
   margin: 0 auto;
-}
+} */
 
 .App-logo {
   height: 140px;
@@ -16,57 +16,63 @@
   }
 }
 
-.App-header {
-  background-color: #fff;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
 
-.App-link {
-  color: #61dafb;
-}
 
-.Line {
-  margin: 20px 0;
-}
-
-.App{
-  margin: 0;
- width: 100vw;
-  max-width: 2457px;
-  position: relative;
-}
-
-.mainContainer{
-  display: flex;
-  
-}
-
-.countryList{
-  position: absolute;
-  flex-basis: 10vw;
-  align-self: flex-start;
-  /* max-height: 52vw; */
+body, html{
   height: 100%;
-  overflow-y:  scroll;
+  margin: 0;
+  background: #ebebeb;
 }
 
-.countryList button{
-  width: 96%;
-  margin: 5px auto;
-  padding: 15px 0;
+
+/* ScrollBar */
+/* width */
+::-webkit-scrollbar {
+  width: 20px;
 }
 
-.chartContainer{
-  flex-basis: 80%;
-  margin: 0 0 0 220px;
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(0,0,0,0);
+  border-radius: 10px;
 }
 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #f8f8f8;
+  border-radius: 10px;
+}
+
+/* Header */
+.header{
+  margin: 0 auto;
+  text-align: center;
+}
+
+.header small{
+  color: green;
+}
+
+
+.app-container{
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.cardsContainer{
+  justify-content: space-around;
+}
+
+.cardContainer .card{
+  min-height: 899px;
+}
+
+.neomorphic{
+  border-radius: 50px;
+  background: #ebebeb;
+  box-shadow:  20px 20px 60px #c8c8c8, 
+               -20px -20px 60px #ffffff;
+}
 
 @keyframes App-logo-spin {
   from {

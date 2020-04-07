@@ -3,15 +3,13 @@ import './Countrylist.css';
 
 
 const Countrylist = (props) => {
-
-    
-    
-//   console.log(props);
-    
+    //  console.log(props.countryName)
     return (
-        <div className='country'>
-            
-  <button onClick={props.click}>{props.countryName}</button>
+        <div className='country text-center '>
+
+            <button className='neomorphic'
+                onClick={props.click}>
+                {props.countryName}</button>
 
         </div>
     );

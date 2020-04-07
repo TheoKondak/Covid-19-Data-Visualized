@@ -1,0 +1,31 @@
+.countryList{
+    overflow-y:  scroll;
+    width: 100%;
+  }
+  
+  .countryList button{
+    width: 70%;
+    margin: 15px auto;
+    text-align: center;
+    padding: 15px 0;
+  }
+  
+  
+  .cardContainer .card{
+    min-height: 80px;
+  }
+  
+  .neomorphic{
+    border-radius: 50px;
+    background: #ebebeb;
+    box-shadow:  20px 20px 60px #c8c8c8, 
+                 -20px -20px 60px #ffffff;
+  }
+
+  .menu{
+    overflow-y: scroll;
+    max-height: 100vh;
+    max-width: 400px;
+    margin: 0 auto;
+      background: rgba(0,0,0,0);
+}

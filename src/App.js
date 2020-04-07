@@ -3,10 +3,14 @@ import logo from './logo.png';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// BurgerMenu
+import Burgermenu from './components/Burgermenu/Burgermenu';
+
 // Components
 import Chart from './components/Chart/Chart';
 import Card from './components/Casecards/Casescard';
-import Countrylist from './components/Countrylist/Countrylist.js';
+import Countrylist from './components/Countrylist/Countrylist';
+
 
 class App extends Component {
   state = {
@@ -88,11 +92,14 @@ class App extends Component {
       totalCases: 0,
       activeCases: 0,
       deceased: 0,
-      discharged: 0
+      discharged: 0,
+      newCases: 0,
+      percentageActiveCases: 0
     },
 
     countryList: []
   }
+
 
 
   componentDidMount() {
@@ -103,13 +110,13 @@ class App extends Component {
 
       let defaultCountry = [...xhr.response.US];
       let countryList = xhr.response;
+      let countryListArray = [];
       let confirmedCases = [];
       let activeCases = [];
       let deaths = [];
       let recovered = [];
       let labels = [];
       let dataPosition = 0;
-      let countryListArray = [];
       let itterator = 0;
 
       // Create Country List Object with ID, Country Name , Country Data
@@ -244,19 +251,23 @@ class App extends Component {
     let labels = [];
     let dataPosition = 0;
 
+
     // Fetched Data Calculations
     // Calculate for Selected Country
     for (let [key, value] of Object.entries(countryData)) {
-      if (value.recovered !== 0 || value.deaths !== 0) { // Start Displaying Since the first Death OR the first recovered occured
-        confirmedCases[dataPosition] = value.confirmed;
-        deaths[dataPosition] = value.deaths;
-        recovered[dataPosition] = value.recovered;
-        // backgroundColors[dataPosition] = "rgba(" + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + ",0.2" + ")";
-        labels[dataPosition] = value.date;
-        // activeCases[dataPosition] =  confirmedCases[dataPosition] - (recovered[dataPosition] + deaths[dataPosition]);
-        dataPosition += 1;
-      }
+      // if (value.recovered !== 0 || value.deaths !== 0) { // Start Displaying Since the first Death OR the first recovered occured
+      confirmedCases[dataPosition] = value.confirmed;
+      deaths[dataPosition] = value.deaths;
+      recovered[dataPosition] = value.recovered;
+      // backgroundColors[dataPosition] = "rgba(" + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + ",0.2" + ")";
+      labels[dataPosition] = value.date;
+      // activeCases[dataPosition] =  confirmedCases[dataPosition] - (recovered[dataPosition] + deaths[dataPosition]);
+      dataPosition += 1;
+      // }
+
     }
+
+
 
     this.setState({
 
@@ -362,129 +373,44 @@ class App extends Component {
 
   render() {
 
+
+    // Burger Menu Styling
+    const contentStyle = {
+      background: "rgba(41,55,55,0.1)",
+      width: "80%",
+      border: "none"
+    };
+
+
     return (
-      <div className="App">
-        <div className='mainContainer'>
-          <div className='sidebar countryList'>
-            {this.state.countryList.map(country => {
-              return <Countrylist
-                key={country.countryId}
-                click={() => this.changeCountryHandler(country.countryId, country.countryName, country.countryData)}
-                countryName={country.countryName}
-                countryData={country.countryData}
-              />
-            })
-            }
+      <div className="fluid-container app-container ">
 
-          </div>
 
-          <div className='chartContainer'>
+
+        {/* Header */}
+        <div className="row col-8 header mx-auto mb-5">
+          <div className='logo-container'>
             <img src={logo} className="App-logo" alt="logo" />
-
-            <h1>COVID-19 Cases in {this.state.countryName}</h1>
-
-            <div className='cardsContainer'>
-              <Card
-                title="Total Cases"
-                metrics={this.state.cardsData.totalCases}
-                class="card totalCases"
-              />
-
-              <Card
-                title="New Cases in the past 24 Hours"
-                metrics={this.state.cardsData.newCases}
-                percentage={(this.state.cardsData.newCases * 100 / this.state.cardsData.totalCases).toFixed(2)}
-                class="card newCases"
-              />
-
-              <Card
-                title="Active Cases"
-                metrics={this.state.cardsData.activeCases}
-                percentage={(this.state.cardsData.activeCases * 100 / this.state.cardsData.totalCases).toFixed(2)}
-                class="card activeCases"
-              />
-
-              <Card
-                title="Deceased"
-                metrics={this.state.cardsData.deceased}
-                percentage={(this.state.cardsData.deceased * 100 / this.state.cardsData.totalCases).toFixed(2)}
-                class="card deceased"
-              />
-
-              <Card
-                title="Discharged"
-                metrics={this.state.cardsData.discharged}
-                percentage={((this.state.cardsData.discharged * 100 / this.state.cardsData.totalCases).toFixed(2))}
-                class="card discharged"
-              />
-
-            </div>
-
-            <div className='chartsContainer'>
-
-              <Chart
-                type='Line'
-                backgroundcolor={this.state.chartDataTotalCases.datasets.backgroundColor}
-                label={this.state.chartDataTotalCases.datasets.label}
-                data={this.state.chartDataTotalCases}
-                options={{
-                  legend: {
-                    title: {
-                      display: true,
-                      text: 'Recoveries VS Deaths'
-                    }
-                  },
-
-                  tooltips: {
-                    callbacks: {
-                      label: function (tooltipItem) {
-                        return tooltipItem.yLabel;
-                      }
-                    }
-                  }
-
-                }} />
+          </div>
+          <h1>COVID-19 Cases in {this.state.countryName}</h1>
+          <small>Last Update: {this.state.chartDataTotalCases.labels[this.state.chartDataTotalCases.labels.length - 1]}</small>
+        </div>
 
 
-              <Chart
-                type='Line'
-                backgroundcolor={this.state.chartDataDeathsVsRecovered.datasets.backgroundColor}
-                label={this.state.chartDataDeathsVsRecovered.datasets.label}
-                data={this.state.chartDataDeathsVsRecovered}
-                options={{
-                  legend: {
-                    title: {
-                      display: true,
-                      text: 'Recoveries VS Deaths'
-                    }
-                  },
+        {/* Cards */}
+        <div className='row col-12 mx-auto mb-4 cardsContainer row'>
 
-                  tooltips: {
-                    callbacks: {
-                      label: function (tooltipItem) {
-                        return tooltipItem.yLabel;
-                      }
-                    }
-                  }
+          <div className='col-2 cardContainer'>
+            <Card
+              title="Total Cases"
+              metrics={this.state.cardsData.totalCases}
+              class="card totalCases"
 
-                }} />
-            </div>
-
-            <div className='chartsContainer'>
-
-              <Chart
-                type='Line'
-                backgroundcolor={this.state.chartDataActiveCasesLogarithmic.datasets.backgroundColor}
-                label={this.state.chartDataActiveCasesLogarithmic.datasets.label}
-                data={this.state.chartDataActiveCasesLogarithmic}
-                options={this.state.chartDataActiveCasesLogarithmic.options} />
-            </div>
-
-            <Chart
-              type='Bar'
-              backgroundcolor={this.state.chartDataDeathsVsRecovered.datasets.backgroundColor}
-              label={this.state.chartDataDeathsVsRecovered.datasets.label}
-              data={this.state.chartDataDeathsVsRecovered}
+              // Chart
+              type='Line'
+              backgroundcolor={this.state.chartDataTotalCases.datasets.backgroundColor}
+              label={this.state.chartDataTotalCases.datasets.label}
+              data={this.state.chartDataTotalCases}
               options={{
                 legend: {
                   title: {
@@ -501,10 +427,174 @@ class App extends Component {
                   }
                 }
 
-              }} />
+              }}
+
+            >   </Card>
           </div>
+
+          <div className='col-2 cardContainer'>
+            <Card
+              title="New Cases"
+              metrics={this.state.cardsData.newCases}
+              percentage={(this.state.cardsData.newCases * 100 / this.state.cardsData.totalCases).toFixed(2)}
+              class="card newCases"
+            />
+          </div>
+
+          <div className='col-2 cardContainer'>
+            <Card
+              title="Active Cases"
+              metrics={this.state.cardsData.activeCases}
+              percentage={(this.state.cardsData.activeCases * 100 / this.state.cardsData.totalCases).toFixed(2)}
+              class="card activeCases"
+            />
+          </div>
+
+          <div className='col-2 cardContainer'>
+            <Card
+              title="Deceased"
+              metrics={this.state.cardsData.deceased}
+              percentage={(this.state.cardsData.deceased * 100 / this.state.cardsData.totalCases).toFixed(2)}
+              class="card deceased"
+            />
+          </div>
+
+          <div className='col-2 cardContainer'>
+            <Card
+              title="Discharged"
+              metrics={this.state.cardsData.discharged}
+              percentage={((this.state.cardsData.discharged * 100 / this.state.cardsData.totalCases).toFixed(2))}
+              class="card discharged"
+            />
+          </div>
+
         </div>
+
+
+        {/* Charts */}
+        <div className='row col-12 chartsContainer'>
+
+          <Chart
+            type='Line'
+            backgroundcolor={this.state.chartDataTotalCases.datasets.backgroundColor}
+            label={this.state.chartDataTotalCases.datasets.label}
+            data={this.state.chartDataTotalCases}
+            options={{
+              legend: {
+                title: {
+                  display: true,
+                  text: 'Recoveries VS Deaths'
+                }
+              },
+
+              tooltips: {
+                callbacks: {
+                  label: function (tooltipItem) {
+                    return tooltipItem.yLabel;
+                  }
+                }
+              }
+
+            }} />
+
+          <Chart
+            type='Line'
+            backgroundcolor={this.state.chartDataDeathsVsRecovered.datasets.backgroundColor}
+            label={this.state.chartDataDeathsVsRecovered.datasets.label}
+            data={this.state.chartDataDeathsVsRecovered}
+            options={{
+              legend: {
+                title: {
+                  display: true,
+                  text: 'Recoveries VS Deaths'
+                }
+              },
+
+              tooltips: {
+                callbacks: {
+                  label: function (tooltipItem) {
+                    return tooltipItem.yLabel;
+                  }
+                }
+              }
+
+            }} />
+        </div>
+
+        {/* Charts */}
+        <div className='row col-12 chartsContainer'>
+          <Chart
+            type='Line'
+            backgroundcolor={this.state.chartDataActiveCasesLogarithmic.datasets.backgroundColor}
+            label={this.state.chartDataActiveCasesLogarithmic.datasets.label}
+            data={this.state.chartDataActiveCasesLogarithmic}
+            options={this.state.chartDataActiveCasesLogarithmic.options} />
+
+
+          <Chart
+            type='Bar'
+            backgroundcolor={this.state.chartDataDeathsVsRecovered.datasets.backgroundColor}
+            label={this.state.chartDataDeathsVsRecovered.datasets.label}
+            data={this.state.chartDataDeathsVsRecovered}
+            options={{
+              legend: {
+                title: {
+                  display: true,
+                  text: 'Recoveries VS Deaths'
+                }
+              },
+
+              tooltips: {
+                callbacks: {
+                  label: function (tooltipItem) {
+                    return tooltipItem.yLabel;
+                  }
+                }
+              }
+
+            }} />
+        </div>
+
+        {/* Burger Menu */}
+        <div className='cardContainer countryList'>
+          <Burgermenu
+            countryList={this.state.countryList}
+            click={this.changeCountryHandler}
+          />
+        </div>
+
+        
+{/* Footer */}
+<div className='container footer'>
+
+<div className='row'>
+<hr className='col-12 footer-hr' />
+<div className='col-12 footer-content'>
+          <p>Find the code of the project on <a href='https://github.com/TheoKondak/covid-19-cata-visualized' target='_blank' title='Find project on GitHub'>GitHub</a></p>
+          <p>This project is created with
+            <br/> 
+            <a href='https://github.com/facebook/create-react-app#readme' target='_blank' title='React Chart js 2'>React</a>
+            <br/>
+            <a href='https://github.com/jerairrest/react-chartjs-2' target='_blank' title='React Chart js 2'>React Chart js 2</a>
+            <br/>
+            <a href='https://github.com/yjose/reactjs-popup-burger-menu' target='_blank' title='React JS popup burger menu'>React js popup burger menu</a>
+          </p>
+          <p>
+            Share your computational power with scientific organizations and contribute to the fight against Covid-19. 
+            <a href='https://foldingathome.org/2020/02/27/foldinghome-takes-up-the-fight-against-covid-19-2019-ncov/' target='_blank' title='Fight Covid-19 with Folding @home'> Learn more</a>
+          </p>
+</div>
+            
+</div>
+
+
+
+        </div>
+
       </div> //App
+
+
+
     );
   }
 }
