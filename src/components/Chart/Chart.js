@@ -3,7 +3,10 @@ import { Line, Doughnut, Bar } from 'react-chartjs-2';
 import "./Chart.css";
 
 class Chart extends Component {
+
+  
   render() {
+
     if (this.props.type === 'Line')
       return (
         <div className="Line">
@@ -11,12 +14,7 @@ class Chart extends Component {
             backgroundcolor={this.props.backgroundcolor}
             label={this.props.label}
             data={this.props.data}
-            options={{
-              title: {
-                display: this.props.display,
-                text: this.props.text
-              },
-            }}
+            options={this.props.options}
           />
         </div>
       )
@@ -39,7 +37,7 @@ class Chart extends Component {
 
     else if (this.props.type === 'Bar')
       return (
-        <div className="Doughnut">
+        <div className="Bar">
           <Bar
             backgroundcolor={this.props.backgroundcolor}
             label={this.props.label}

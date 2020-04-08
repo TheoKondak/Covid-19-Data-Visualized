@@ -1,84 +1,66 @@
-.chartsContainer{
+.chartsContainer {
   display: flex;
   justify-content: space-evenly;
-  /* flex-direction: row; */
-  margin: 0 40px;
 }
 
-.Line{
-    position: relative;
-  width: 50%;
-  padding: 0 20px;
+.Bar, .Line, .Doughnut {
+  position: relative;
+  height: 400px;
+  max-height: 440px;
 }
 
+.app-container {
+  max-width: 1600px;
+}
 
+.chart {
+  margin: 16px 0 10px 0;
+}
 
 /* 
   ##Device = Desktops
   ##Screen = 1281px to higher resolution desktops
 */
 
-@media (min-width: 1281px) {
-  
-   
-    
-  }
-  
-  /* 
+@media (min-width: 1281px) {}
+
+/* 
     ##Device = Laptops, Desktops
     ##Screen = B/w 1025px to 1280px
   */
-  
-  @media (min-width: 1025px) and (max-width: 1280px) {
-    
-   
-    
-  }
-  
-  /* 
+
+@media (min-width: 1025px) and (max-width: 1280px) {}
+
+/* 
     ##Device = Tablets, Ipads (portrait)
     ##Screen = B/w 768px to 1024px
   */
-  
-  @media (min-width: 768px) and (max-width: 1024px) {
-    
-   
-    
-  }
-  
-  /* 
+
+@media (min-width: 768px) and (max-width: 1024px) {}
+
+/* 
     ##Device = Tablets, Ipads (landscape)
     ##Screen = B/w 768px to 1024px
   */
-  
-  @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
-    
-   
-    
-  }
-  
-  /* 
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {}
+
+/* 
     ##Device = Low Resolution Tablets, Mobiles (Landscape)
     ##Screen = B/w 481px to 767px
   */
-  
-  @media (min-width: 481px) and (max-width: 767px) {
-    
-   
-    
-  }
-  
-  /* 
+
+@media (min-width: 481px) and (max-width: 767px) {}
+
+/* 
     ##Device = Most of the Smartphones Mobiles (Portrait)
     ##Screen = B/w 320px to 479px
   */
-  
-  @media (min-width: 320px) and (max-width: 480px) {
-    
-    .Line{
-        position: relative;
-        width: 100vw;
-        height: 500px;
-    }
-    
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .Line {
+    position: relative;
+    /* width: 100vw; */
+    height: 500px;
   }
+}

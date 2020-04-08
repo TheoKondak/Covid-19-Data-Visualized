@@ -1,9 +1,3 @@
-/* .App {
-  text-align: center;
-  max-width: 1200px;
-  margin: 0 auto;
-} */
-
 .App-logo {
   height: 140px;
   pointer-events: none;
@@ -16,62 +10,73 @@
   }
 }
 
-
-
-body, html{
-  height: 100%;
-  margin: 0;
-  background: #ebebeb;
-}
-
-
 /* ScrollBar */
+
 /* width */
+
 ::-webkit-scrollbar {
   width: 20px;
 }
 
 /* Track */
+
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px rgba(0,0,0,0);
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0);
   border-radius: 10px;
 }
 
 /* Handle */
+
 ::-webkit-scrollbar-thumb {
   background: #f8f8f8;
   border-radius: 10px;
 }
 
 /* Header */
-.header{
+
+.header {
+  display: flex;
+  flex-direction: column;
   margin: 0 auto;
   text-align: center;
 }
 
-.header small{
+.header small {
   color: green;
 }
 
+/* Footer */
 
-.app-container{
+.footer {
+  text-align: center;
+}
+
+.last-update-container {
+  align-self: center
+}
+
+.footer-content {
+  text-align: center;
+  margin: 20px 0 30px 0;
+}
+
+/* .app-container{
   max-width: 1400px;
   margin: 0 auto;
+} */
+
+/* Main Content */
+
+.app-container {
+  max-width: 1600px;
 }
 
-.cardsContainer{
-  justify-content: space-around;
-}
+/* Design */
 
-.cardContainer .card{
-  min-height: 899px;
-}
-
-.neomorphic{
+.neomorphic {
   border-radius: 50px;
   background: #ebebeb;
-  box-shadow:  20px 20px 60px #c8c8c8, 
-               -20px -20px 60px #ffffff;
+  box-shadow: 20px 20px 60px #c8c8c8, -20px -20px 60px #ffffff;
 }
 
 @keyframes App-logo-spin {

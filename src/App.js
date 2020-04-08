@@ -9,7 +9,6 @@ import Burgermenu from './components/Burgermenu/Burgermenu';
 // Components
 import Chart from './components/Chart/Chart';
 import Card from './components/Casecards/Casescard';
-import Countrylist from './components/Countrylist/Countrylist';
 
 
 class App extends Component {
@@ -99,7 +98,6 @@ class App extends Component {
 
     countryList: []
   }
-
 
 
   componentDidMount() {
@@ -271,7 +269,7 @@ class App extends Component {
 
     this.setState({
 
-      chartDataTotalCases: {
+      chartDataConfirmedCases: {
 
         labels: labels,
 
@@ -317,13 +315,7 @@ class App extends Component {
             backgroundColor: 'rgba(249, 254, 239, 0.9)'
           }
 
-        ],
-        options: {
-          title: {
-            display: true,
-            text: 'Recoveries VS Deaths'
-          },
-        },
+        ]
 
       },
 
@@ -337,19 +329,7 @@ class App extends Component {
             data: activeCases,
             backgroundColor: 'rgba(65,131,196,0.4)',
             hidden: false
-          }],
-
-        options: {
-          title: {
-            display: true,
-            text: 'Confirmed Cases'
-          },
-          scales: {
-            yAxes: [{
-              type: 'logarithmic'
-            }]
-          }
-        },
+          }]
 
       },
 
@@ -366,6 +346,20 @@ class App extends Component {
         percentageActiveCases: 2
       },
 
+      // cardTotalCasesChartData: {
+      //   datasets: [
+      //     {
+      //       data:  sd,
+      //     }]
+      // },
+
+      cardTotalCasesChartData: {
+        datasets: [
+          {
+            data: confirmedCases,
+          }]
+      },
+
       countryName: countryName
     })
 
@@ -373,22 +367,11 @@ class App extends Component {
 
   render() {
 
-
-    // Burger Menu Styling
-    const contentStyle = {
-      background: "rgba(41,55,55,0.1)",
-      width: "80%",
-      border: "none"
-    };
-
-
     return (
-      <div className="fluid-container app-container ">
-
-
+      <div className="container-fluid app-container ">
 
         {/* Header */}
-        <div className="row col-8 header mx-auto mb-5">
+        <div className="row col-md-8 header mx-auto mb-5" align="center">
           <div className='logo-container'>
             <img src={logo} className="App-logo" alt="logo" />
           </div>
@@ -398,15 +381,192 @@ class App extends Component {
 
 
         {/* Cards */}
-        <div className='row col-12 mx-auto mb-4 cardsContainer row'>
+        <div className='row col-md-12 mx-auto mb-4 cardsContainer'>
 
-          <div className='col-2 cardContainer'>
+          <div className='col-lg-2 mb-2 cardContainer'>
             <Card
               title="Total Cases"
               metrics={this.state.cardsData.totalCases}
               class="card totalCases"
 
               // Chart
+              type='Line'
+              data={this.state.chartDataTotalCases}
+              options={{
+                legend: {
+                  display: false
+                },
+
+                scales: {
+                  xAxes: [{ display: false }],
+                  yAxes: [{ display: false }],
+                },
+
+                elements: {
+                  point: {
+                    radius: 0
+                  }
+                },
+
+                tooltips: {
+                  enabled: false,
+
+                },
+                maintainAspectRatio: false
+              }}
+            >   </Card>
+          </div>
+
+          <div className='col-lg-2 mb-2 cardContainer'>
+            <Card
+              title="New Cases"
+              metrics={this.state.cardsData.newCases}
+              percentage={(this.state.cardsData.newCases * 100 / this.state.cardsData.totalCases).toFixed(2)}
+              class="card newCases"
+
+              // Chart
+              type='Line'
+              data={this.state.chartDataTotalCases}
+              options={{
+                legend: {
+                  display: false
+                },
+
+                scales: {
+                  xAxes: [{ display: false }],
+                  yAxes: [{ display: false }],
+                },
+
+                elements: {
+                  point: {
+                    radius: 0
+                  }
+                },
+
+                tooltips: {
+                  enabled: false,
+
+                },
+                maintainAspectRatio: false
+              }}
+            />
+          </div>
+
+          <div className='col-lg-2 mb-2 cardContainer'>
+            <Card
+              title="Active Cases"
+              metrics={this.state.cardsData.activeCases}
+              percentage={(this.state.cardsData.activeCases * 100 / this.state.cardsData.totalCases).toFixed(2)}
+              class="card activeCases"
+
+              // Chart
+              type='Line'
+              data={this.state.chartDataTotalCases}
+              options={{
+                legend: {
+                  display: false
+                },
+
+                scales: {
+                  xAxes: [{ display: false }],
+                  yAxes: [{ display: false }],
+                },
+
+                elements: {
+                  point: {
+                    radius: 0
+                  }
+                },
+
+                tooltips: {
+                  enabled: false,
+
+                },
+                maintainAspectRatio: false
+              }}
+            />
+          </div>
+
+          <div className='col-lg-2 mb-2 cardContainer'>
+            <Card
+              title="Deceased"
+              metrics={this.state.cardsData.deceased}
+              percentage={(this.state.cardsData.deceased * 100 / this.state.cardsData.totalCases).toFixed(2)}
+              class="card deceased"
+
+              // Chart
+              type='Line'
+              data={this.state.chartDataTotalCases}
+              options={{
+                legend: {
+                  display: false
+                },
+
+                scales: {
+                  xAxes: [{ display: false }],
+                  yAxes: [{ display: false }],
+                },
+
+                elements: {
+                  point: {
+                    radius: 0
+                  }
+                },
+
+                tooltips: {
+                  enabled: false,
+
+                },
+                maintainAspectRatio: false
+              }}
+
+            />
+          </div>
+
+          <div className='col-lg-2 mb-2 cardContainer'>
+            <Card
+              title="Discharged"
+              metrics={this.state.cardsData.discharged}
+              percentage={((this.state.cardsData.discharged * 100 / this.state.cardsData.totalCases).toFixed(2))}
+              class="card discharged"
+
+              // Chart
+              type='Line'
+              data={this.state.chartDataTotalCases}
+              options={{
+                legend: {
+                  display: false
+                },
+
+                scales: {
+                  xAxes: [{ display: false }],
+                  yAxes: [{ display: false }],
+                },
+
+                elements: {
+                  point: {
+                    radius: 0
+                  }
+                },
+
+                tooltips: {
+                  enabled: false,
+
+                },
+                maintainAspectRatio: false
+              }}
+
+            />
+          </div>
+
+        </div>
+
+
+        {/* Charts */}
+        <div className='row m-0  chartsContainer'>
+
+          <div className='col-lg-6 p-1 chart'>
+            <Chart
               type='Line'
               backgroundcolor={this.state.chartDataTotalCases.datasets.backgroundColor}
               label={this.state.chartDataTotalCases.datasets.label}
@@ -419,141 +579,108 @@ class App extends Component {
                   }
                 },
 
+                scales: {
+                  xAxes: [{ display: true }],
+                  yAxes: [{ display: true }],
+                },
+
                 tooltips: {
+
+                  enabled: true,
+
                   callbacks: {
                     label: function (tooltipItem) {
                       return tooltipItem.yLabel;
                     }
                   }
-                }
-
-              }}
-
-            >   </Card>
+                },
+                maintainAspectRatio: false
+              }} />
           </div>
 
-          <div className='col-2 cardContainer'>
-            <Card
-              title="New Cases"
-              metrics={this.state.cardsData.newCases}
-              percentage={(this.state.cardsData.newCases * 100 / this.state.cardsData.totalCases).toFixed(2)}
-              class="card newCases"
-            />
-          </div>
+          <div className='col-lg-6 p-1 chart'>
+            <Chart
+              type='Line'
+              backgroundcolor={this.state.chartDataDeathsVsRecovered.datasets.backgroundColor}
+              label={this.state.chartDataDeathsVsRecovered.datasets.label}
+              data={this.state.chartDataDeathsVsRecovered}
+              options={{
+                legend: {
+                  title: {
+                    text: 'Recoveries VS Deaths',
+                    display: true
+                  }
+                },
 
-          <div className='col-2 cardContainer'>
-            <Card
-              title="Active Cases"
-              metrics={this.state.cardsData.activeCases}
-              percentage={(this.state.cardsData.activeCases * 100 / this.state.cardsData.totalCases).toFixed(2)}
-              class="card activeCases"
-            />
-          </div>
+                scales: {
+                  xAxes: [{ display: true }],
+                  yAxes: [{ display: true }],
+                },
 
-          <div className='col-2 cardContainer'>
-            <Card
-              title="Deceased"
-              metrics={this.state.cardsData.deceased}
-              percentage={(this.state.cardsData.deceased * 100 / this.state.cardsData.totalCases).toFixed(2)}
-              class="card deceased"
-            />
-          </div>
+                tooltips: {
 
-          <div className='col-2 cardContainer'>
-            <Card
-              title="Discharged"
-              metrics={this.state.cardsData.discharged}
-              percentage={((this.state.cardsData.discharged * 100 / this.state.cardsData.totalCases).toFixed(2))}
-              class="card discharged"
-            />
+                  enabled: true,
+
+                  callbacks: {
+                    label: function (tooltipItem) {
+                      return tooltipItem.yLabel;
+                    }
+                  }
+                },
+                maintainAspectRatio: false
+              }} />
           </div>
 
         </div>
 
 
         {/* Charts */}
-        <div className='row col-12 chartsContainer'>
+        <div className='row m-0 chartsContainer'>
 
-          <Chart
-            type='Line'
-            backgroundcolor={this.state.chartDataTotalCases.datasets.backgroundColor}
-            label={this.state.chartDataTotalCases.datasets.label}
-            data={this.state.chartDataTotalCases}
-            options={{
-              legend: {
-                title: {
-                  display: true,
-                  text: 'Recoveries VS Deaths'
-                }
-              },
+          <div className='col-lg-6 p-1 chart'>
+            <Chart
+              type='Line'
+              backgroundcolor={this.state.chartDataActiveCasesLogarithmic.datasets.backgroundColor}
+              label={this.state.chartDataActiveCasesLogarithmic.datasets.label}
+              data={this.state.chartDataActiveCasesLogarithmic}
+              options={this.state.chartDataActiveCasesLogarithmic.options} />
+          </div>
 
-              tooltips: {
-                callbacks: {
-                  label: function (tooltipItem) {
-                    return tooltipItem.yLabel;
+          <div className='col-lg-6 p-1 chart'>
+            <Chart
+              type='Bar'
+              backgroundcolor={this.state.chartDataDeathsVsRecovered.datasets.backgroundColor}
+              label={this.state.chartDataDeathsVsRecovered.datasets.label}
+              data={this.state.chartDataDeathsVsRecovered}
+              options={{
+                legend: {
+                  title: {
+                    display: true,
+                    text: 'Recoveries VS Deaths'
                   }
-                }
-              }
+                },
 
-            }} />
+                scales: {
+                  xAxes: [{ display: true }],
+                  yAxes: [{ display: true }],
+                },
 
-          <Chart
-            type='Line'
-            backgroundcolor={this.state.chartDataDeathsVsRecovered.datasets.backgroundColor}
-            label={this.state.chartDataDeathsVsRecovered.datasets.label}
-            data={this.state.chartDataDeathsVsRecovered}
-            options={{
-              legend: {
-                title: {
-                  display: true,
-                  text: 'Recoveries VS Deaths'
-                }
-              },
+                tooltips: {
 
-              tooltips: {
-                callbacks: {
-                  label: function (tooltipItem) {
-                    return tooltipItem.yLabel;
+                  enabled: true,
+
+                  callbacks: {
+                    label: function (tooltipItem) {
+                      return tooltipItem.yLabel;
+                    }
                   }
-                }
-              }
+                },
+                maintainAspectRatio: false
+              }} />
+          </div>
 
-            }} />
         </div>
 
-        {/* Charts */}
-        <div className='row col-12 chartsContainer'>
-          <Chart
-            type='Line'
-            backgroundcolor={this.state.chartDataActiveCasesLogarithmic.datasets.backgroundColor}
-            label={this.state.chartDataActiveCasesLogarithmic.datasets.label}
-            data={this.state.chartDataActiveCasesLogarithmic}
-            options={this.state.chartDataActiveCasesLogarithmic.options} />
-
-
-          <Chart
-            type='Bar'
-            backgroundcolor={this.state.chartDataDeathsVsRecovered.datasets.backgroundColor}
-            label={this.state.chartDataDeathsVsRecovered.datasets.label}
-            data={this.state.chartDataDeathsVsRecovered}
-            options={{
-              legend: {
-                title: {
-                  display: true,
-                  text: 'Recoveries VS Deaths'
-                }
-              },
-
-              tooltips: {
-                callbacks: {
-                  label: function (tooltipItem) {
-                    return tooltipItem.yLabel;
-                  }
-                }
-              }
-
-            }} />
-        </div>
 
         {/* Burger Menu */}
         <div className='cardContainer countryList'>
@@ -563,29 +690,28 @@ class App extends Component {
           />
         </div>
 
-        
-{/* Footer */}
-<div className='container footer'>
 
-<div className='row'>
-<hr className='col-12 footer-hr' />
-<div className='col-12 footer-content'>
-          <p>Find the code of the project on <a href='https://github.com/TheoKondak/covid-19-cata-visualized' target='_blank' title='Find project on GitHub'>GitHub</a></p>
-          <p>This project is created with
-            <br/> 
-            <a href='https://github.com/facebook/create-react-app#readme' target='_blank' title='React Chart js 2'>React</a>
-            <br/>
-            <a href='https://github.com/jerairrest/react-chartjs-2' target='_blank' title='React Chart js 2'>React Chart js 2</a>
-            <br/>
-            <a href='https://github.com/yjose/reactjs-popup-burger-menu' target='_blank' title='React JS popup burger menu'>React js popup burger menu</a>
-          </p>
-          <p>
-            Share your computational power with scientific organizations and contribute to the fight against Covid-19. 
-            <a href='https://foldingathome.org/2020/02/27/foldinghome-takes-up-the-fight-against-covid-19-2019-ncov/' target='_blank' title='Fight Covid-19 with Folding @home'> Learn more</a>
-          </p>
-</div>
-            
-</div>
+        {/* Footer */}
+        <div className='container footer'>
+          <div className='row'>
+            <hr className='col-10 footer-hr' />
+            <div className='col-12'>
+              <p>Find the code of the project on <a href='https://github.com/TheoKondak/covid-19-cata-visualized' target='_blank' rel="noopener noreferrer" title='Find project on GitHub'>GitHub</a></p>
+              <p>This project is created with
+            <br />
+                <a href='https://github.com/facebook/create-react-app#readme' target='_blank' rel="noopener noreferrer" title='React Chart js 2'>React</a>
+                <br />
+                <a href='https://github.com/jerairrest/react-chartjs-2' target='_blank' rel="noopener noreferrer" title='React Chart js 2'>React Chart js 2</a>
+                <br />
+                <a href='https://github.com/yjose/reactjs-popup-burger-menu' target='_blank' rel="noopener noreferrer" title='React JS popup burger menu'>React js popup burger menu</a>
+              </p>
+              <p>
+                Copyright 2020 Theodoros Kondakos. All rights reserved
+            <a href='https://github.com/TheoKondak/Covid-19-Data-Visualized/blob/master/LICENSE' target='_blank' rel='noopener noreferrer' title='Fight Covid-19 with Folding @home'> View Licence information</a>
+              </p>
+            </div>
+
+          </div>
 
 
 
