@@ -23,7 +23,7 @@ const Card = (props) => {
 
 <div className='containerMetricsChart'>
             <Chart
-                type='Line'
+                type={props.type}
                
                 
                 data={props.data}

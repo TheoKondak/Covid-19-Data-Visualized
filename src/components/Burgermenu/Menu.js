@@ -14,10 +14,9 @@ class Menu extends Component {
   }
 
   render() {
-    return (<div className="container menu">
+    return (<div className="menu clear" id='grid'>
 
-      <div className='row'>
-        <div className='col-10'>
+    
           {this.props.countryList.map(country => {
 
             let countryId = [];
@@ -36,8 +35,7 @@ class Menu extends Component {
           })
           }
         </div>
-      </div>
-    </div>
+  
     )
   }
 };

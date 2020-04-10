@@ -1,0 +1,368 @@
+
+
+.App-logo {
+  height: 40px;
+  pointer-events: none;
+  margin-top: 20px;
+  padding: 0;
+  float:right;
+}
+
+
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 200s linear;
+  }
+}
+
+/* ScrollBar */
+
+/* width */
+
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+/* Track */
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0);
+  border-radius: 10px;
+}
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+  background: #f8f8f8;
+  border-radius: 10px;
+}
+
+/* Header */
+
+.header {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.header small {
+  color: green;
+}
+
+
+/* Subheader */
+.subHeader{
+  text-align: center;
+}
+
+.subHeader h3{
+    margin-bottom: 0;
+    font-size: 40px;
+}
+
+.subHeader small{
+    color: green;
+    font-size: 9px;
+    padding-left: 10px;
+    display: block;
+    margin-top: -2px;
+}
+
+
+/* Footer */
+
+.footer {
+  text-align: center;
+}
+
+.last-update-container {
+  align-self: center
+}
+
+.footer-content {
+  text-align: center;
+  margin: 20px 0 30px 0;
+}
+
+/* .app-container{
+  max-width: 1400px;
+  margin: 0 auto;
+} */
+
+/* Main Content */
+
+.app-container {
+  max-width: 1600px;
+}
+
+/* Design */
+.neomorphic{
+  position: relative;
+  display:  inline-block;
+  padding: 10px 30px;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: #5484a2;
+  border:none;
+  font-size: 18px;
+  border-radius: 40px;
+  box-shadow:  20px 20px 60px #ebebeb, 
+             -20px -20px 60px #ebebeb,
+             inset 2px 2px 4px rgba(255,255,255,0.1),
+             2px 2px  8px rgba(0,0,0,0.15);    
+ }
+
+
+ .neomorphic:hover{
+   box-shadow: inset -2px -2px 8px rgba(255,255,255,1),
+                inset -2px -2px  12px rgba(255,255,255,0.5),
+                inset 2px 2px 4px rgba(9255,255,255,0.1),
+                inset  2px 2px 8px rgba(0,0,0,0.15);
+ }
+
+.uni{
+ -webkit-transition: all 1.2s ease-in;
+-moz-transition: all 1.2s ease-in;
+-o-transition: all 1.2s ease-in;
+transition: all 1.2s ease-in;
+}
+
+#grid {
+    position: relative;
+    width:40%;
+    margin: 0 auto;
+    padding: 0; /* Clears unordered list default of 40px */
+}
+
+
+#grid button:focus{
+  outline: none;
+}
+
+.clear:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+#grid .hexagon-container{
+ list-style-type: none;
+    position: relative;
+    float: left;
+    width: 27.85714285714286%;
+    padding: 0 0 32.16760145166612% 0;
+    -o-transform: rotate(-60deg) skewY(30deg);
+    -moz-transform: rotate(-60deg) skewY(30deg);
+    -webkit-transform: rotate(-60deg) skewY(30deg);
+    -ms-transform: rotate(-60deg) skewY(30deg);
+    transform: rotate(-60deg) skewY(30deg);
+    overflow: hidden;
+}
+
+#grid .hexagon-container:nth-child(2) {
+  margin: 0 1%;
+}
+
+#grid .hexagon-container:nth-child(3n+2) {
+  margin: 0 1%;
+}
+
+#grid .hexagon-container:nth-child(6n+4), #grid .hexagon-container:nth-child(6n+5), #grid .hexagon-container:nth-child(6n+6) {
+    margin-top: -6.9285714285%;
+    margin-bottom: -6.9285714285%;
+    -o-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+    -moz-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+    -webkit-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+    -ms-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+    transform: translateX(50%) rotate(-60deg) skewY(30deg);
+}
+
+#grid .hexagon-container:nth-child(6n+4) { 
+    margin-left: 0.5%;
+}
+
+#grid .hexagon{
+     position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #f2f3f7;
+    -o-transform: skewY(-30deg) rotate(60deg);
+    -moz-transform: skewY(-30deg) rotate(60deg);
+    -webkit-transform: skewY(-30deg) rotate(60deg);
+    -ms-transform: skewY(-30deg) rotate(60deg);
+    transform: skewY(-30deg) rotate(60deg);
+    overflow: hidden;
+    
+    display: flex;
+    align-items: center;
+}
+
+#grid .hexagon * {
+    visibility: visible;
+    
+}
+
+#grid button{
+    display: block;
+    
+}
+
+#grid .hexagon{
+  
+  animation: fadein 2.5s ease forwards;
+}
+
+
+
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+
+
+
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+/* 
+  ##Device = Desktops
+  ##Screen = 1281px to higher resolution desktops
+*/
+
+@media (min-width: 1281px) {
+  
+  
+  
+}
+
+/* 
+  ##Device = Laptops, Desktops
+  ##Screen = B/w 1025px to 1280px
+*/
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+  
+  /* Design  */
+ #grid{
+  width: 100%;
+} 
+
+.neomorphic{
+ font-size: 0.5em; // for legacy browsers
+ font-size: 2vw;
+ background: #f2f3f7;
+ box-shadow: none;
+ width: 100%;
+ height: 100%;
+}
+  
+}
+
+/* 
+  ##Device = Tablets, Ipads (portrait)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  
+  /* Design  */
+ #grid{
+  width: 100%;
+} 
+
+.neomorphic{
+ font-size: 0.5em; // for legacy browsers
+ font-size: 2vw;
+ background: #f2f3f7;
+ box-shadow: none;
+ width: 100%;
+ height: 100%;
+}
+  
+}
+
+/* 
+  ##Device = Tablets, Ipads (landscape)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  
+  /* Design  */
+ #grid{
+  width: 100%;
+} 
+
+.neomorphic{
+ font-size: 0.5em; // for legacy browsers
+ font-size: 2vw;
+ background: #f2f3f7;
+ box-shadow: none;
+ width: 100%;
+ height: 100%;
+}
+  
+}
+
+/* 
+  ##Device = Low Resolution Tablets, Mobiles (Landscape)
+  ##Screen = B/w 481px to 767px
+*/
+
+@media (min-width: 481px) and (max-width: 767px) {
+  
+  /* Design  */
+ #grid{
+  width: 100%;
+} 
+
+.neomorphic{
+ font-size: 0.5em; // for legacy browsers
+ font-size: 2vw;
+ background: #f2f3f7;
+ box-shadow: none;
+ width: 100%;
+ height: 100%;
+}
+  
+}
+
+/* 
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Screen = B/w 320px to 479px
+*/
+
+@media (min-width: 320px) and (max-width: 480px) {
+  
+ /* Design  */
+ #grid{
+   width: 100%;
+ } 
+
+ .neomorphic{
+  font-size: 0.5em; // for legacy browsers
+  font-size: 2vw;
+  background: #f2f3f7;
+  box-shadow: none;
+  width: 100%;
+  height: 100%;
+}
+
+}

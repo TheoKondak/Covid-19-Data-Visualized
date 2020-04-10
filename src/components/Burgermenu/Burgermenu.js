@@ -13,7 +13,7 @@ const styles = {
 };
 const contentStyle = {
   background: "rgba(41,55,55,0.1)",
-  width: "80%",
+  width: "100vw",
   border: "none"
 };
 

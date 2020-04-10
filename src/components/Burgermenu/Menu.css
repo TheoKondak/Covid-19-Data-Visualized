@@ -1,5 +1,6 @@
 .countryList{
     overflow-y:  scroll;
+    overflow-x: hidden;
     width: 100%;
   }
   
@@ -14,18 +15,13 @@
   .cardContainer .card{
     min-height: 80px;
   }
-  
-  .neomorphic{
-    border-radius: 50px;
-    background: #ebebeb;
-    box-shadow:  20px 20px 60px #c8c8c8, 
-                 -20px -20px 60px #ffffff;
-  }
+
 
   .menu{
     overflow-y: scroll;
+    overflow-x: hidden;
     max-height: 100vh;
-    max-width: 400px;
+    /* max-width: 400px; */
     margin: 0 auto;
       background: rgba(0,0,0,0);
 }

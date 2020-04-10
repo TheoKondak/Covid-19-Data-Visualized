@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.png';
-import './App.css';
+import './App.scss';
+import { usePopper } from 'react-popper';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // BurgerMenu
@@ -96,8 +97,54 @@ class App extends Component {
       percentageActiveCases: 0
     },
 
+    cardsChartsData: {
+
+      cardsChartsNewCases: {
+        labels: '',
+        datasets: [
+          {
+            label: '',
+            data: [],
+            backgroundColor: 'rgba(220,53,69,0.9)'
+          }]
+      },
+
+      cardsChartsActiveCases: {
+        labels: '',
+        datasets: [
+          {
+            label: '',
+            data: [],
+            backgroundColor: 'rgba(220,53,69,0.9)'
+          }]
+      },
+
+      cardsChartsDeaths: {
+        labels: '',
+        datasets: [
+          {
+            label: '',
+            data: [],
+            backgroundColor: 'rgba(220,53,69,0.9)'
+          }]
+      },
+
+      cardsChartsDischarged: {
+        labels: '',
+        datasets: [
+          {
+            label: '',
+            data: [],
+            backgroundColor: 'rgba(220,53,69,0.9)'
+          }]
+      }
+
+    },
+
     countryList: []
   }
+
+
 
 
   componentDidMount() {
@@ -106,15 +153,20 @@ class App extends Component {
     xhr.responseType = 'json';
     xhr.onload = () => {
 
-      let defaultCountry = [...xhr.response.US];
+      let defaultCountry = [...xhr.response.China];
       let countryList = xhr.response;
       let countryListArray = [];
       let confirmedCases = [];
-      let activeCases = [];
+      let activeCasesLogarithmic = [];
       let deaths = [];
       let recovered = [];
       let labels = [];
       let dataPosition = 0;
+      let cardChartConfirmed= [];
+      let cardsChartNewCases = [];
+      let cardsChartActiveCases = [];
+      let cardsChartDeaths = [];
+      let cardsChartRecovered = [];
       let itterator = 0;
 
       // Create Country List Object with ID, Country Name , Country Data
@@ -130,11 +182,20 @@ class App extends Component {
           confirmedCases[dataPosition] = value.confirmed;
           deaths[dataPosition] = value.deaths;
           recovered[dataPosition] = value.recovered;
-          // backgroundColors[dataPosition] = "rgba(" + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + ",0.2" + ")";
           labels[dataPosition] = value.date;
+
+          activeCasesLogarithmic[dataPosition] = value.confirmed - (value.deaths + value.recovered);
+          // Calculations for Charts for cards
+          cardChartConfirmed = confirmedCases[dataPosition] - confirmedCases[dataPosition - 1];
+          cardsChartNewCases[dataPosition] = confirmedCases[dataPosition] - confirmedCases[dataPosition - 1];
+          cardsChartActiveCases[dataPosition] = value.confirmed - (value.deaths + value.recovered);
+          cardsChartDeaths[dataPosition] = deaths[dataPosition] - deaths[dataPosition-1];
+          cardsChartRecovered[dataPosition] = recovered[dataPosition] - recovered[dataPosition-1];
           dataPosition += 1;
         }
       }
+
+
 
       this.setState({
         //Set Default Country State
@@ -151,10 +212,7 @@ class App extends Component {
             }],
 
           options: {
-            title: {
-              display: true,
-              text: 'Confirmed Cases'
-            },
+
           }
         },
 
@@ -201,7 +259,7 @@ class App extends Component {
           datasets: [
             {
               label: 'Active Cases (Logarithmic)',
-              data: activeCases,
+              data: activeCasesLogarithmic,
               backgroundColor: 'rgba(65,131,196,0.4)',
               hidden: false
             }],
@@ -233,6 +291,56 @@ class App extends Component {
           percentageActiveCases: 2
         },
 
+        cardsChartsData: {
+
+          cardsChartsNewCases: {
+            labels: labels,
+            datasets: [
+              {
+                label: '',
+                data: cardsChartNewCases,
+                backgroundColor: () => {
+                  return (cardsChartNewCases[cardsChartNewCases.length-1] > cardsChartNewCases[cardsChartNewCases.length-2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
+                 }
+              }]
+          },
+
+          cardsChartsActiveCases: {
+            labels: labels,
+            datasets: [
+              {
+                label: '',
+                data: cardsChartActiveCases,
+                backgroundColor: () => {
+                  return (cardsChartActiveCases[cardsChartActiveCases.length-1] > cardsChartActiveCases[cardsChartActiveCases.length-2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
+                 }
+              }]
+          },
+          cardsChartsDeaths: {
+            labels: labels,
+            datasets: [
+              {
+                label: '',
+                data: cardsChartDeaths,
+                backgroundColor: () => {
+                  return (cardsChartDeaths[cardsChartDeaths.length-1] > cardsChartDeaths[cardsChartDeaths.length-2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
+                 }
+              }]
+          },
+    
+          cardsChartsRecovered: {
+            labels: labels,
+            datasets: [
+              {
+                label: '',
+                data: cardsChartRecovered,
+                backgroundColor: () => {
+                  return (cardsChartRecovered[cardsChartRecovered.length-1] > cardsChartRecovered[cardsChartRecovered.length-2]) ? 'rgba(40, 167, 69, 0.9)' : 'rgba(220,53,69,0.9)';
+                 }
+              }]
+          }
+        },
+
         countryName: 'USA',
 
         countryList: countryListArray
@@ -241,28 +349,39 @@ class App extends Component {
     xhr.send();
   }
 
+
+
   changeCountryHandler = (countryId, countryName, countryData) => {
     let confirmedCases = [];
     let activeCases = [];
     let deaths = [];
     let recovered = [];
     let labels = [];
+    let  activeCasesLogarithmic = [];
+    let cardsChartNewCases = [];
+    let cardsChartActiveCases = [];
+    let cardsChartDeaths = [];
+    let cardsChartRecovered = [];
     let dataPosition = 0;
-
 
     // Fetched Data Calculations
     // Calculate for Selected Country
     for (let [key, value] of Object.entries(countryData)) {
-      // if (value.recovered !== 0 || value.deaths !== 0) { // Start Displaying Since the first Death OR the first recovered occured
+      if (value.recovered !== 0 || value.deaths !== 0) { // Start Displaying Since the first Death OR the first recovered occured
       confirmedCases[dataPosition] = value.confirmed;
       deaths[dataPosition] = value.deaths;
       recovered[dataPosition] = value.recovered;
-      // backgroundColors[dataPosition] = "rgba(" + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + ",0.2" + ")";
       labels[dataPosition] = value.date;
-      // activeCases[dataPosition] =  confirmedCases[dataPosition] - (recovered[dataPosition] + deaths[dataPosition]);
-      dataPosition += 1;
-      // }
 
+      activeCasesLogarithmic[dataPosition] = value.confirmed - (value.deaths + value.recovered);
+      // Calculations for Charts for cards
+      cardsChartNewCases[dataPosition] = confirmedCases[dataPosition] - confirmedCases[dataPosition - 1];
+      cardsChartActiveCases[dataPosition] = value.confirmed - (value.deaths + value.recovered);;
+      cardsChartDeaths[dataPosition] = deaths[dataPosition] - deaths[dataPosition-1];
+      cardsChartRecovered[dataPosition] = recovered[dataPosition] - recovered[dataPosition-1]
+
+      dataPosition += 1;
+       }
     }
 
 
@@ -310,7 +429,7 @@ class App extends Component {
 
           {
             label: 'Recovered',
-            data: recovered,
+            data: cardsChartRecovered,
             // backgroundColor: backgroundColors,
             backgroundColor: 'rgba(249, 254, 239, 0.9)'
           }
@@ -326,7 +445,7 @@ class App extends Component {
         datasets: [
           {
             label: 'Active Cases (Logarithmic)',
-            data: activeCases,
+            data: activeCasesLogarithmic,
             backgroundColor: 'rgba(65,131,196,0.4)',
             hidden: false
           }]
@@ -346,18 +465,57 @@ class App extends Component {
         percentageActiveCases: 2
       },
 
-      // cardTotalCasesChartData: {
-      //   datasets: [
-      //     {
-      //       data:  sd,
-      //     }]
-      // },
 
-      cardTotalCasesChartData: {
-        datasets: [
-          {
-            data: confirmedCases,
-          }]
+      cardsChartsData: {
+
+        cardsChartsNewCases: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'New Cases',
+              data: cardsChartNewCases,
+              backgroundColor: () => {
+                return (cardsChartNewCases[cardsChartNewCases.length-1] > cardsChartNewCases[cardsChartNewCases.length-2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
+               }
+            }]
+        },
+
+        cardsChartsActiveCases: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Active Cases',
+              data: cardsChartActiveCases,
+              backgroundColor: () => {
+                return (cardsChartActiveCases[cardsChartActiveCases.length-1] > cardsChartActiveCases[cardsChartActiveCases.length-2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
+               }
+            }]
+        },
+
+        cardsChartsDeaths: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Deaths',
+              data: cardsChartDeaths,
+              backgroundColor: () => {
+                return (cardsChartDeaths[cardsChartDeaths.length-1] > cardsChartDeaths[cardsChartDeaths.length-2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
+               }
+            }]
+        },
+  
+        cardsChartsRecovered: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Recovered',
+              data: cardsChartRecovered,
+              backgroundColor: () => {
+                return (cardsChartRecovered[cardsChartRecovered.length-1] > cardsChartRecovered[cardsChartRecovered.length-2]) ? 'rgba(40, 167, 69, 0.9)' : 'rgba(220,53,69,0.9)';
+               }
+            }]
+        }
+
       },
 
       countryName: countryName
@@ -366,31 +524,46 @@ class App extends Component {
   }
 
   render() {
-
     return (
       <div className="container-fluid app-container ">
 
         {/* Header */}
-        <div className="row col-md-8 header mx-auto mb-5" align="center">
-          <div className='logo-container'>
-            <img src={logo} className="App-logo" alt="logo" />
+        <div className="row col-12 header mx-auto mb-5" align="center">
+
+          <div className='col-12 row'>
+            <div className='col-md-4 logo-container'>
+              <img src={logo} className="App-logo" alt="logo" />
+            </div>
+            <div className='col-md-5 title'>
+              <h1>Covid-19 Data Visualized</h1>
+              <small>v0.03</small>
+            </div>
           </div>
-          <h1>COVID-19 Cases in {this.state.countryName}</h1>
-          <small>Last Update: {this.state.chartDataTotalCases.labels[this.state.chartDataTotalCases.labels.length - 1]}</small>
         </div>
+
+        {/* Subheader */}
+        <div className='row subHeader'>
+          <div className='col mb-4 mt-4'>
+            <h3>{this.state.countryName}</h3>
+            <small>Last Update: {this.state.chartDataTotalCases.labels[this.state.chartDataTotalCases.labels.length - 1]}</small>
+          </div>
+        </div>
+
 
 
         {/* Cards */}
         <div className='row col-md-12 mx-auto mb-4 cardsContainer'>
 
-          <div className='col-lg-2 mb-2 cardContainer'>
+
+
+          <div className='col-lg-2 mb-2 cardContainer' >
             <Card
               title="Total Cases"
               metrics={this.state.cardsData.totalCases}
               class="card totalCases"
 
               // Chart
-              type='Line'
+              type='Bar'
               data={this.state.chartDataTotalCases}
               options={{
                 legend: {
@@ -404,7 +577,7 @@ class App extends Component {
 
                 elements: {
                   point: {
-                    radius: 0
+                    radius: 1
                   }
                 },
 
@@ -414,10 +587,14 @@ class App extends Component {
                 },
                 maintainAspectRatio: false
               }}
-            >   </Card>
+
+            >  
+             </Card>
           </div>
 
-          <div className='col-lg-2 mb-2 cardContainer'>
+        
+
+          <div className='col-lg-2 mb-2 cardContainer' >
             <Card
               title="New Cases"
               metrics={this.state.cardsData.newCases}
@@ -425,8 +602,9 @@ class App extends Component {
               class="card newCases"
 
               // Chart
-              type='Line'
-              data={this.state.chartDataTotalCases}
+              type='Bar'
+              labels='New Cases Card Chart'
+              data={this.state.cardsChartsData.cardsChartsNewCases}
               options={{
                 legend: {
                   display: false
@@ -445,7 +623,6 @@ class App extends Component {
 
                 tooltips: {
                   enabled: false,
-
                 },
                 maintainAspectRatio: false
               }}
@@ -460,8 +637,9 @@ class App extends Component {
               class="card activeCases"
 
               // Chart
-              type='Line'
-              data={this.state.chartDataTotalCases}
+              type='Bar'
+              labels='Active Cases'
+              data={this.state.cardsChartsData.cardsChartsActiveCases}
               options={{
                 legend: {
                   display: false
@@ -485,6 +663,7 @@ class App extends Component {
                 maintainAspectRatio: false
               }}
             />
+      
           </div>
 
           <div className='col-lg-2 mb-2 cardContainer'>
@@ -495,8 +674,9 @@ class App extends Component {
               class="card deceased"
 
               // Chart
-              type='Line'
-              data={this.state.chartDataTotalCases}
+              type='Bar'
+              labels='Deaths'
+              data={this.state.cardsChartsData.cardsChartsDeaths}
               options={{
                 legend: {
                   display: false
@@ -531,8 +711,9 @@ class App extends Component {
               class="card discharged"
 
               // Chart
-              type='Line'
-              data={this.state.chartDataTotalCases}
+              type='Bar'
+              labels='Discharged'
+              data={this.state.cardsChartsData.cardsChartsRecovered}
               options={{
                 legend: {
                   display: false
@@ -634,6 +815,8 @@ class App extends Component {
         </div>
 
 
+      
+
         {/* Charts */}
         <div className='row m-0 chartsContainer'>
 
@@ -646,7 +829,7 @@ class App extends Component {
               options={this.state.chartDataActiveCasesLogarithmic.options} />
           </div>
 
-          <div className='col-lg-6 p-1 chart'>
+          <div className='col-lg-6 p-1 chart' >
             <Chart
               type='Bar'
               backgroundcolor={this.state.chartDataDeathsVsRecovered.datasets.backgroundColor}
@@ -696,7 +879,9 @@ class App extends Component {
           <div className='row'>
             <hr className='col-10 footer-hr' />
             <div className='col-12'>
-              <p>Find the code of the project on <a href='https://github.com/TheoKondak/covid-19-cata-visualized' target='_blank' rel="noopener noreferrer" title='Find project on GitHub'>GitHub</a></p>
+              <p>Find the code of the project on <a href='https://github.com/TheoKondak/covid-19-cata-visualized' target='_blank' rel="noopener noreferrer" title='Find project on GitHub'>GitHub</a>
+              </p>
+              <p><a href='https://github.com/TheoKondak/Covid-19-Data-Visualized/blob/master/README.md' target='_blank' rel="noopener noreferrer" >Changelog</a></p>
               <p>This project is created with
             <br />
                 <a href='https://github.com/facebook/create-react-app#readme' target='_blank' rel="noopener noreferrer" title='React Chart js 2'>React</a>

@@ -11,7 +11,6 @@ class Chart extends Component {
       return (
         <div className="Line">
           <Line
-            backgroundcolor={this.props.backgroundcolor}
             label={this.props.label}
             data={this.props.data}
             options={this.props.options}
@@ -23,14 +22,9 @@ class Chart extends Component {
       return (
         <div className="Doughnut">
           <Doughnut
-            width={this.props.width}
-            height={this.props.height}
-            backgroundcolor={this.props.backgroundcolor}
             label={this.props.label}
             data={this.props.data}
-            options={{
-              maintainAspectRatio: false
-            }}
+            options={this.props.options}
           />
         </div>
       )
@@ -39,12 +33,9 @@ class Chart extends Component {
       return (
         <div className="Bar">
           <Bar
-            backgroundcolor={this.props.backgroundcolor}
             label={this.props.label}
             data={this.props.data}
-            options={{
-              maintainAspectRatio: false
-            }}
+            options={this.props.options}
           />
         </div>
       )
