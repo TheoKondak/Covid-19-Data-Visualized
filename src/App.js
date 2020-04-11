@@ -3,6 +3,7 @@ import logo from './logo.png';
 import './App.scss';
 import { usePopper } from 'react-popper';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Tabs, Tab, OverlayTrigger, Popover, PopoverTitle, PopoverContent } from 'react-bootstrap';
 
 // BurgerMenu
 import Burgermenu from './components/Burgermenu/Burgermenu';
@@ -10,6 +11,7 @@ import Burgermenu from './components/Burgermenu/Burgermenu';
 // Components
 import Chart from './components/Chart/Chart';
 import Card from './components/Casecards/Casescard';
+// import PopoverCustom from './components/Popover/Popover';
 
 
 class App extends Component {
@@ -129,7 +131,7 @@ class App extends Component {
           }]
       },
 
-      cardsChartsDischarged: {
+      cardsChartsRecovered: {
         labels: '',
         datasets: [
           {
@@ -153,7 +155,7 @@ class App extends Component {
     xhr.responseType = 'json';
     xhr.onload = () => {
 
-      let defaultCountry = [...xhr.response.China];
+      let defaultCountry = [...xhr.response.US];
       let countryList = xhr.response;
       let countryListArray = [];
       let confirmedCases = [];
@@ -162,7 +164,7 @@ class App extends Component {
       let recovered = [];
       let labels = [];
       let dataPosition = 0;
-      let cardChartConfirmed= [];
+      let cardChartConfirmed = [];
       let cardsChartNewCases = [];
       let cardsChartActiveCases = [];
       let cardsChartDeaths = [];
@@ -189,13 +191,13 @@ class App extends Component {
           cardChartConfirmed = confirmedCases[dataPosition] - confirmedCases[dataPosition - 1];
           cardsChartNewCases[dataPosition] = confirmedCases[dataPosition] - confirmedCases[dataPosition - 1];
           cardsChartActiveCases[dataPosition] = value.confirmed - (value.deaths + value.recovered);
-          cardsChartDeaths[dataPosition] = deaths[dataPosition] - deaths[dataPosition-1];
-          cardsChartRecovered[dataPosition] = recovered[dataPosition] - recovered[dataPosition-1];
+          cardsChartDeaths[dataPosition] = deaths[dataPosition] - deaths[dataPosition - 1];
+          cardsChartRecovered[dataPosition] = recovered[dataPosition] - recovered[dataPosition - 1];
           dataPosition += 1;
         }
       }
 
-
+      console.log(cardsChartRecovered);
 
       this.setState({
         //Set Default Country State
@@ -300,8 +302,8 @@ class App extends Component {
                 label: '',
                 data: cardsChartNewCases,
                 backgroundColor: () => {
-                  return (cardsChartNewCases[cardsChartNewCases.length-1] > cardsChartNewCases[cardsChartNewCases.length-2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
-                 }
+                  return (cardsChartNewCases[cardsChartNewCases.length - 1] > cardsChartNewCases[cardsChartNewCases.length - 2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
+                }
               }]
           },
 
@@ -312,8 +314,8 @@ class App extends Component {
                 label: '',
                 data: cardsChartActiveCases,
                 backgroundColor: () => {
-                  return (cardsChartActiveCases[cardsChartActiveCases.length-1] > cardsChartActiveCases[cardsChartActiveCases.length-2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
-                 }
+                  return (cardsChartActiveCases[cardsChartActiveCases.length - 1] > cardsChartActiveCases[cardsChartActiveCases.length - 2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
+                }
               }]
           },
           cardsChartsDeaths: {
@@ -323,11 +325,11 @@ class App extends Component {
                 label: '',
                 data: cardsChartDeaths,
                 backgroundColor: () => {
-                  return (cardsChartDeaths[cardsChartDeaths.length-1] > cardsChartDeaths[cardsChartDeaths.length-2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
-                 }
+                  return (cardsChartDeaths[cardsChartDeaths.length - 1] > cardsChartDeaths[cardsChartDeaths.length - 2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
+                }
               }]
           },
-    
+
           cardsChartsRecovered: {
             labels: labels,
             datasets: [
@@ -335,8 +337,8 @@ class App extends Component {
                 label: '',
                 data: cardsChartRecovered,
                 backgroundColor: () => {
-                  return (cardsChartRecovered[cardsChartRecovered.length-1] > cardsChartRecovered[cardsChartRecovered.length-2]) ? 'rgba(40, 167, 69, 0.9)' : 'rgba(220,53,69,0.9)';
-                 }
+                  return (cardsChartRecovered[cardsChartRecovered.length - 1] > cardsChartRecovered[cardsChartRecovered.length - 2]) ? 'rgba(40, 167, 69, 0.9)' : 'rgba(220,53,69,0.9)';
+                }
               }]
           }
         },
@@ -357,7 +359,7 @@ class App extends Component {
     let deaths = [];
     let recovered = [];
     let labels = [];
-    let  activeCasesLogarithmic = [];
+    let activeCasesLogarithmic = [];
     let cardsChartNewCases = [];
     let cardsChartActiveCases = [];
     let cardsChartDeaths = [];
@@ -368,20 +370,20 @@ class App extends Component {
     // Calculate for Selected Country
     for (let [key, value] of Object.entries(countryData)) {
       if (value.recovered !== 0 || value.deaths !== 0) { // Start Displaying Since the first Death OR the first recovered occured
-      confirmedCases[dataPosition] = value.confirmed;
-      deaths[dataPosition] = value.deaths;
-      recovered[dataPosition] = value.recovered;
-      labels[dataPosition] = value.date;
+        confirmedCases[dataPosition] = value.confirmed;
+        deaths[dataPosition] = value.deaths;
+        recovered[dataPosition] = value.recovered;
+        labels[dataPosition] = value.date;
 
-      activeCasesLogarithmic[dataPosition] = value.confirmed - (value.deaths + value.recovered);
-      // Calculations for Charts for cards
-      cardsChartNewCases[dataPosition] = confirmedCases[dataPosition] - confirmedCases[dataPosition - 1];
-      cardsChartActiveCases[dataPosition] = value.confirmed - (value.deaths + value.recovered);;
-      cardsChartDeaths[dataPosition] = deaths[dataPosition] - deaths[dataPosition-1];
-      cardsChartRecovered[dataPosition] = recovered[dataPosition] - recovered[dataPosition-1]
+        activeCasesLogarithmic[dataPosition] = value.confirmed - (value.deaths + value.recovered);
+        // Calculations for Charts for cards
+        cardsChartNewCases[dataPosition] = confirmedCases[dataPosition] - confirmedCases[dataPosition - 1];
+        cardsChartActiveCases[dataPosition] = value.confirmed - (value.deaths + value.recovered);;
+        cardsChartDeaths[dataPosition] = deaths[dataPosition] - deaths[dataPosition - 1];
+        cardsChartRecovered[dataPosition] = recovered[dataPosition] - recovered[dataPosition - 1]
 
-      dataPosition += 1;
-       }
+        dataPosition += 1;
+      }
     }
 
 
@@ -475,8 +477,8 @@ class App extends Component {
               label: 'New Cases',
               data: cardsChartNewCases,
               backgroundColor: () => {
-                return (cardsChartNewCases[cardsChartNewCases.length-1] > cardsChartNewCases[cardsChartNewCases.length-2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
-               }
+                return (cardsChartNewCases[cardsChartNewCases.length - 1] > cardsChartNewCases[cardsChartNewCases.length - 2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
+              }
             }]
         },
 
@@ -487,8 +489,8 @@ class App extends Component {
               label: 'Active Cases',
               data: cardsChartActiveCases,
               backgroundColor: () => {
-                return (cardsChartActiveCases[cardsChartActiveCases.length-1] > cardsChartActiveCases[cardsChartActiveCases.length-2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
-               }
+                return (cardsChartActiveCases[cardsChartActiveCases.length - 1] > cardsChartActiveCases[cardsChartActiveCases.length - 2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
+              }
             }]
         },
 
@@ -499,11 +501,11 @@ class App extends Component {
               label: 'Deaths',
               data: cardsChartDeaths,
               backgroundColor: () => {
-                return (cardsChartDeaths[cardsChartDeaths.length-1] > cardsChartDeaths[cardsChartDeaths.length-2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
-               }
+                return (cardsChartDeaths[cardsChartDeaths.length - 1] > cardsChartDeaths[cardsChartDeaths.length - 2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
+              }
             }]
         },
-  
+
         cardsChartsRecovered: {
           labels: labels,
           datasets: [
@@ -511,8 +513,8 @@ class App extends Component {
               label: 'Recovered',
               data: cardsChartRecovered,
               backgroundColor: () => {
-                return (cardsChartRecovered[cardsChartRecovered.length-1] > cardsChartRecovered[cardsChartRecovered.length-2]) ? 'rgba(40, 167, 69, 0.9)' : 'rgba(220,53,69,0.9)';
-               }
+                return (cardsChartRecovered[cardsChartRecovered.length - 1] > cardsChartRecovered[cardsChartRecovered.length - 2]) ? 'rgba(40, 167, 69, 0.9)' : 'rgba(220,53,69,0.9)';
+              }
             }]
         }
 
@@ -524,6 +526,9 @@ class App extends Component {
   }
 
   render() {
+
+
+
     return (
       <div className="container-fluid app-container ">
 
@@ -532,11 +537,12 @@ class App extends Component {
 
           <div className='col-12 row'>
             <div className='col-md-4 logo-container'>
-              <img src={logo} className="App-logo" alt="logo" />
+
             </div>
             <div className='col-md-5 title'>
+              <img src={logo} className="App-logo" alt="logo" />
               <h1>Covid-19 Data Visualized</h1>
-              <small>v0.03</small>
+              <small>v0.04</small>
             </div>
           </div>
         </div>
@@ -550,318 +556,686 @@ class App extends Component {
         </div>
 
 
-
         {/* Cards */}
         <div className='row col-md-12 mx-auto mb-4 cardsContainer'>
 
 
+          <div className='col-lg-2 mb-2 cardContainer'  >
+
+            <div className='popoverTotalCases'>
+              <OverlayTrigger
+                trigger="click"
+                rootClose
+                key={'bottom'}
+                placement={'bottom'}
+                overlay={
+                  <Popover id={`popover-positioned-${'bottom'}`}>
+                    <PopoverTitle as="h6"><strong>Total number of cases in {this.state.countryName}</strong></PopoverTitle>
+                    <PopoverContent>
+                      <p>The total number of cases occured in {this.state.countryName}. </p>
+                      <p>Each column in the chart, represents one day.</p>
+                      <p>If the total number of cases show an upward trend, the bars in the  chart will be displayed in red color. If the total number of cases show an downward trend, then the bars will be displayed in green color. </p> <p className='popoverNote'>Note:
+                        <small> This metric is based on the tests performed in the specific country. In most countries the tests are being performed only to patients that show acute symptoms. The actual number of total cases is much higher, but they present mild symptoms.</small></p>
+                    </PopoverContent>
+                  </Popover>
+                }
+              >
+                <div variant="secondary">
+
+                  <Card
+                    title="Total Cases"
+                    metrics={this.state.cardsData.totalCases}
+                    class="card totalCases"
+
+                    // Chart
+                    type='Bar'
+                    data={this.state.chartDataTotalCases}
+                    options={{
+                      legend: {
+                        display: false
+                      },
+
+                      scales: {
+                        xAxes: [{ display: false }],
+                        yAxes: [{ display: false }],
+                      },
+
+                      elements: {
+                        point: {
+                          radius: 1
+                        }
+                      },
+
+                      tooltips: {
+                        enabled: false,
+
+                      },
+                      maintainAspectRatio: false
+                    }}
+
+                  />
+
+
+                </div>
+              </OverlayTrigger>{' '}
+            </div>
+
+          </div>
 
           <div className='col-lg-2 mb-2 cardContainer' >
-            <Card
-              title="Total Cases"
-              metrics={this.state.cardsData.totalCases}
-              class="card totalCases"
 
-              // Chart
-              type='Bar'
-              data={this.state.chartDataTotalCases}
-              options={{
-                legend: {
-                  display: false
-                },
+            <div className='popoverNewcases'>
+              <OverlayTrigger
+                trigger="click"
+                rootClose
+                key={'bottom'}
+                placement={'bottom'}
+                overlay={
+                  <Popover id={`popover-positioned-${'bottom'}`}>
+                    <PopoverTitle as="h6"><strong>Total number of new cases recorded in {this.state.countryName}</strong></PopoverTitle>
+                    <PopoverContent>
+                      <p>
+                        The total number of new cases, as long as they are reported (usually occured in the past 24 hours).
+                      </p>
+                      <p>The higher the percentage value, the worse is the situation in the country regarding the spread of the virus. A good percentage should be considered a percentage around 4% for most countries.</p>
+                      <p>Each column in the chart, represents one day.</p>
+                      <p>If the number of new cases show an upward trend, the bars in the  chart will be displayed in red color. If the number of new cases show an downward trend, then the bars will be displayed in green color. </p> <p className='popoverNote'>Note:
+                        <small> This metric is based on the tests performed in the specific country. In most countries the tests are being performed only to patients that show acute symptoms. The actual number of total cases is much higher, but they present mild symptoms.</small></p>
+                    </PopoverContent>
+                  </Popover>
+                }
+              >
+                <div variant="secondary">
 
-                scales: {
-                  xAxes: [{ display: false }],
-                  yAxes: [{ display: false }],
-                },
+                  <Card
+                    title="New Cases"
+                    metrics={this.state.cardsData.newCases}
+                    percentage={(this.state.cardsData.newCases * 100 / this.state.cardsData.totalCases).toFixed(2)}
+                    class="card newCases"
 
-                elements: {
-                  point: {
-                    radius: 1
-                  }
-                },
+                    // Chart
+                    type='Bar'
+                    labels='New Cases Card Chart'
+                    data={this.state.cardsChartsData.cardsChartsNewCases}
+                    options={{
+                      legend: {
+                        display: false
+                      },
 
-                tooltips: {
-                  enabled: false,
+                      scales: {
+                        xAxes: [{ display: false }],
+                        yAxes: [{ display: false }],
+                      },
 
-                },
-                maintainAspectRatio: false
-              }}
+                      elements: {
+                        point: {
+                          radius: 0
+                        }
+                      },
 
-            >  
-             </Card>
-          </div>
+                      tooltips: {
+                        enabled: false,
+                      },
+                      maintainAspectRatio: false
+                    }}
+                  />
 
-        
+                </div>
+              </OverlayTrigger>{' '}
+            </div>
 
-          <div className='col-lg-2 mb-2 cardContainer' >
-            <Card
-              title="New Cases"
-              metrics={this.state.cardsData.newCases}
-              percentage={(this.state.cardsData.newCases * 100 / this.state.cardsData.totalCases).toFixed(2)}
-              class="card newCases"
 
-              // Chart
-              type='Bar'
-              labels='New Cases Card Chart'
-              data={this.state.cardsChartsData.cardsChartsNewCases}
-              options={{
-                legend: {
-                  display: false
-                },
-
-                scales: {
-                  xAxes: [{ display: false }],
-                  yAxes: [{ display: false }],
-                },
-
-                elements: {
-                  point: {
-                    radius: 0
-                  }
-                },
-
-                tooltips: {
-                  enabled: false,
-                },
-                maintainAspectRatio: false
-              }}
-            />
           </div>
 
           <div className='col-lg-2 mb-2 cardContainer'>
-            <Card
-              title="Active Cases"
-              metrics={this.state.cardsData.activeCases}
-              percentage={(this.state.cardsData.activeCases * 100 / this.state.cardsData.totalCases).toFixed(2)}
-              class="card activeCases"
 
-              // Chart
-              type='Bar'
-              labels='Active Cases'
-              data={this.state.cardsChartsData.cardsChartsActiveCases}
-              options={{
-                legend: {
-                  display: false
-                },
+            <div className='popoverActiveCases'>
+              <OverlayTrigger
+                trigger="click"
+                rootClose
+                key={'bottom'}
+                placement={'bottom'}
+                overlay={
+                  <Popover id={`popover-positioned-${'bottom'}`}>
+                    <PopoverTitle as="h6"><strong>The number of active cases in {this.state.countryName}</strong></PopoverTitle>
+                    <PopoverContent>
+                      <p>
+                        This metric takes under consideration the reported new cases, as well as the reported deaths and recoveries.
+                      </p>
+                      <p>The higher the percentage value, the worse is the situation in the country, since this percentage is portraing cases that still had no outcome. Most patients symptoms retreat after about 20 days.</p>
+                      <p>Each column in the chart, represents one day.</p>
+                      <p>If the number of active cases show an upward trend, the bars in the chart will be displayed in red color. If the number of active cases show an downward trend, then the bars will be displayed in green color. </p> <p className='popoverNote'>Note:
+                        <small> This metric is based on the tests performed in the specific country. In most countries the tests are being performed only to patients that show acute symptoms. The actual number of total cases is much higher, but they present mild symptoms.</small></p>
+                    </PopoverContent>
+                  </Popover>
+                }
+              >
+                <div variant="secondary">
 
-                scales: {
-                  xAxes: [{ display: false }],
-                  yAxes: [{ display: false }],
-                },
+                  <Card
+                    title="Active Cases"
+                    metrics={this.state.cardsData.activeCases}
+                    percentage={(this.state.cardsData.activeCases * 100 / this.state.cardsData.totalCases).toFixed(2)}
+                    class="card activeCases"
 
-                elements: {
-                  point: {
-                    radius: 0
-                  }
-                },
+                    // Chart
+                    type='Bar'
+                    labels='Active Cases'
+                    data={this.state.cardsChartsData.cardsChartsActiveCases}
+                    options={{
+                      legend: {
+                        display: false
+                      },
 
-                tooltips: {
-                  enabled: false,
+                      scales: {
+                        xAxes: [{ display: false }],
+                        yAxes: [{ display: false }],
+                      },
 
-                },
-                maintainAspectRatio: false
-              }}
-            />
-      
+                      elements: {
+                        point: {
+                          radius: 0
+                        }
+                      },
+
+                      tooltips: {
+                        enabled: false,
+
+                      },
+                      maintainAspectRatio: false
+                    }}
+                  />
+
+                </div>
+              </OverlayTrigger>{' '}
+            </div>
           </div>
 
           <div className='col-lg-2 mb-2 cardContainer'>
-            <Card
-              title="Deceased"
-              metrics={this.state.cardsData.deceased}
-              percentage={(this.state.cardsData.deceased * 100 / this.state.cardsData.totalCases).toFixed(2)}
-              class="card deceased"
 
-              // Chart
-              type='Bar'
-              labels='Deaths'
-              data={this.state.cardsChartsData.cardsChartsDeaths}
-              options={{
-                legend: {
-                  display: false
-                },
+            <div className='popoverDeceased'>
+              <OverlayTrigger
+                trigger="click"
+                rootClose
+                key={'bottom'}
+                placement={'bottom'}
+                overlay={
+                  <Popover id={`popover-positioned-${'bottom'}`}>
+                    <PopoverTitle as="h6"><strong>The number of deseased patients in {this.state.countryName}</strong></PopoverTitle>
+                    <PopoverContent>
+                      <p>
+                        This metric takes under consideration the reported deaths for {this.state.countryName}.
+                      </p>
+                      <p>The higher the percentage value, the worse is the situation in the country. The estimated percentage of deaths globaly for the SARS Covid-19 is between 1% and 2%.</p>
+                      <p>Each column in the chart, represents one day.</p>
+                      <p>If the number of deaths show an upward trend, the bars in the chart will be displayed in red color. If the number of deaths show an downward trend, then the bars will be displayed in green color. </p> <p className='popoverNote'>Note:
+                        <small> This metric is based on the tests performed in the specific country. In most countries the tests are being performed only to patients that show acute symptoms. The actual number of total cases is much higher, but they present mild symptoms.</small></p>
+                    </PopoverContent>
+                  </Popover>
+                }
+              >
+                <div variant="secondary">
+                  <Card
+                    title="Deceased"
+                    metrics={this.state.cardsData.deceased}
+                    percentage={(this.state.cardsData.deceased * 100 / this.state.cardsData.totalCases).toFixed(2)}
+                    class="card deceased"
 
-                scales: {
-                  xAxes: [{ display: false }],
-                  yAxes: [{ display: false }],
-                },
+                    // Chart
+                    type='Bar'
+                    labels='Deaths'
+                    data={this.state.cardsChartsData.cardsChartsDeaths}
+                    options={{
+                      legend: {
+                        display: false
+                      },
 
-                elements: {
-                  point: {
-                    radius: 0
-                  }
-                },
+                      scales: {
+                        xAxes: [{ display: false }],
+                        yAxes: [{ display: false }],
+                      },
 
-                tooltips: {
-                  enabled: false,
+                      elements: {
+                        point: {
+                          radius: 0
+                        }
+                      },
 
-                },
-                maintainAspectRatio: false
-              }}
+                      tooltips: {
+                        enabled: false,
 
-            />
+                      },
+                      maintainAspectRatio: false
+                    }}
+
+                  />
+
+                </div>
+              </OverlayTrigger>{' '}
+            </div>
           </div>
 
           <div className='col-lg-2 mb-2 cardContainer'>
-            <Card
-              title="Discharged"
-              metrics={this.state.cardsData.discharged}
-              percentage={((this.state.cardsData.discharged * 100 / this.state.cardsData.totalCases).toFixed(2))}
-              class="card discharged"
 
-              // Chart
-              type='Bar'
-              labels='Discharged'
-              data={this.state.cardsChartsData.cardsChartsRecovered}
-              options={{
-                legend: {
-                  display: false
-                },
+            <div className='popoverDischarged'>
+              <OverlayTrigger
+                trigger="click"
+                rootClose
+                key={'bottom'}
+                placement={'bottom'}
+                overlay={
+                  <Popover id={`popover-positioned-${'bottom'}`}>
+                    <PopoverTitle as="h6"><strong>The number of discharged patients in {this.state.countryName}</strong></PopoverTitle>
+                    <PopoverContent>
+                      <p>
+                        This metric represents cases that did the SARS Covid-19 test in {this.state.countryName}, but now the symptoms have retreated and patients are now considered healthy again.
+                      </p>
+                      <p>The higher the percentage value, the better the situation is in the country.</p>
+                      <p>Each column in the chart, represents one day.</p>
+                      <p>If the number of discharged cases show an upward trend, the bars in the chart will be displayed in green color. If the number of dischaged show an downward trend, then the bars will be displayed in red color. </p> <p className='popoverNote'>Note:
+                        <small> This metric is based on the tests performed in the specific country. In most countries the tests are being performed only to patients that show acute symptoms. The actual number of total cases is much higher, but they present mild symptoms.</small></p>
+                    </PopoverContent>
+                  </Popover>
+                }
+              >
+                <div variant="secondary">
+                  <Card
+                    title="Discharged"
+                    metrics={this.state.cardsData.discharged}
+                    percentage={((this.state.cardsData.discharged * 100 / this.state.cardsData.totalCases).toFixed(2))}
+                    class="card discharged"
 
-                scales: {
-                  xAxes: [{ display: false }],
-                  yAxes: [{ display: false }],
-                },
+                    // Chart
+                    type='Bar'
+                    labels='Discharged'
+                    data={this.state.cardsChartsData.cardsChartsRecovered}
+                    options={{
+                      legend: {
+                        display: false
+                      },
 
-                elements: {
-                  point: {
-                    radius: 0
-                  }
-                },
+                      scales: {
+                        xAxes: [{ display: false }],
+                        yAxes: [{ display: false }],
+                      },
 
-                tooltips: {
-                  enabled: false,
+                      elements: {
+                        point: {
+                          radius: 0
+                        }
+                      },
 
-                },
-                maintainAspectRatio: false
-              }}
+                      tooltips: {
+                        enabled: false,
 
-            />
+                      },
+                      maintainAspectRatio: false
+                    }}
+
+                  />
+
+                </div>
+              </OverlayTrigger>{' '}
+            </div>
+
+
+
           </div>
 
         </div>
-
 
         {/* Charts */}
         <div className='row m-0  chartsContainer'>
 
           <div className='col-lg-6 p-1 chart'>
-            <Chart
-              type='Line'
-              backgroundcolor={this.state.chartDataTotalCases.datasets.backgroundColor}
-              label={this.state.chartDataTotalCases.datasets.label}
-              data={this.state.chartDataTotalCases}
-              options={{
-                legend: {
-                  title: {
-                    display: true,
-                    text: 'Recoveries VS Deaths'
-                  }
-                },
 
-                scales: {
-                  xAxes: [{ display: true }],
-                  yAxes: [{ display: true }],
-                },
+            <Tabs defaultActiveKey="Line" id="tabsTotalCases">
+              <Tab eventKey="Line" title="Line">
+                <Chart
+                  type='Line'
+                  backgroundcolor={this.state.chartDataTotalCases.datasets.backgroundColor}
+                  label={this.state.chartDataTotalCases.datasets.label}
+                  data={this.state.chartDataTotalCases}
+                  options={{
+                    legend: {
+                      title: {
+                        display: true,
+                        text: 'Recoveries VS Deaths'
+                      }
+                    },
 
-                tooltips: {
+                    scales: {
+                      xAxes: [{ display: true }],
+                      yAxes: [{ display: true }],
+                    },
 
-                  enabled: true,
+                    tooltips: {
 
-                  callbacks: {
-                    label: function (tooltipItem) {
-                      return tooltipItem.yLabel;
-                    }
-                  }
-                },
-                maintainAspectRatio: false
-              }} />
+                      enabled: true,
+
+                      callbacks: {
+                        label: function (tooltipItem) {
+                          return tooltipItem.yLabel;
+                        }
+                      }
+                    },
+                    maintainAspectRatio: false
+                  }} />
+
+              </Tab>
+              <Tab eventKey="Bar" title="Bar">
+
+                <Chart
+                  type='Bar'
+                  backgroundcolor={this.state.chartDataTotalCases.datasets.backgroundColor}
+                  label={this.state.chartDataTotalCases.datasets.label}
+                  data={this.state.chartDataTotalCases}
+                  options={{
+                    legend: {
+                      title: {
+                        display: true,
+                        text: 'Recoveries VS Deaths'
+                      }
+                    },
+
+                    scales: {
+                      xAxes: [{ display: true }],
+                      yAxes: [{ display: true }],
+                    },
+
+                    tooltips: {
+
+                      enabled: true,
+
+                      callbacks: {
+                        label: function (tooltipItem) {
+                          return tooltipItem.yLabel;
+                        }
+                      }
+                    },
+                    maintainAspectRatio: false
+                  }} />
+
+              </Tab>
+              <Tab eventKey="Doughnut" title="Doughnut">
+                <Chart
+                  type='Doughnut'
+                  backgroundcolor={this.state.chartDataTotalCases.datasets.backgroundColor}
+                  label={this.state.chartDataTotalCases.datasets.label}
+                  data={this.state.chartDataTotalCases}
+                  options={{
+                    legend: {
+                      title: {
+                        display: true,
+                        text: 'Recoveries VS Deaths'
+                      }
+                    },
+
+                    scales: {
+                      xAxes: [{ display: true }],
+                      yAxes: [{ display: true }],
+                    },
+
+                    tooltips: {
+
+                      enabled: true,
+
+                      callbacks: {
+                        label: function (tooltipItem) {
+                          return tooltipItem.yLabel;
+                        }
+                      }
+                    },
+                    maintainAspectRatio: false
+                  }} />
+              </Tab>
+            </Tabs>
+
           </div>
 
           <div className='col-lg-6 p-1 chart'>
-            <Chart
-              type='Line'
-              backgroundcolor={this.state.chartDataDeathsVsRecovered.datasets.backgroundColor}
-              label={this.state.chartDataDeathsVsRecovered.datasets.label}
-              data={this.state.chartDataDeathsVsRecovered}
-              options={{
-                legend: {
-                  title: {
-                    text: 'Recoveries VS Deaths',
-                    display: true
-                  }
-                },
 
-                scales: {
-                  xAxes: [{ display: true }],
-                  yAxes: [{ display: true }],
-                },
+            <Tabs defaultActiveKey="Line" id="tabsMixedConfirmedDeathsRecovered">
+              <Tab eventKey="Line" title="Line">
+                <Chart
+                  type='Line'
+                  backgroundcolor={this.state.chartDataDeathsVsRecovered.datasets.backgroundColor}
+                  label={this.state.chartDataDeathsVsRecovered.datasets.label}
+                  data={this.state.chartDataDeathsVsRecovered}
+                  options={{
+                    legend: {
+                      title: {
+                        text: 'Recoveries VS Deaths',
+                        display: true
+                      }
+                    },
 
-                tooltips: {
+                    scales: {
+                      xAxes: [{ display: true }],
+                      yAxes: [{ display: true }],
+                    },
 
-                  enabled: true,
+                    tooltips: {
 
-                  callbacks: {
-                    label: function (tooltipItem) {
-                      return tooltipItem.yLabel;
-                    }
-                  }
-                },
-                maintainAspectRatio: false
-              }} />
+                      enabled: true,
+
+                      callbacks: {
+                        label: function (tooltipItem) {
+                          return tooltipItem.yLabel;
+                        }
+                      }
+                    },
+                    maintainAspectRatio: false
+                  }} />
+              </Tab>
+              <Tab eventKey="Bar" title="Bar">
+                <Chart
+                  type='Bar'
+                  backgroundcolor={this.state.chartDataDeathsVsRecovered.datasets.backgroundColor}
+                  label={this.state.chartDataDeathsVsRecovered.datasets.label}
+                  data={this.state.chartDataDeathsVsRecovered}
+                  options={{
+                    legend: {
+                      title: {
+                        text: 'Recoveries VS Deaths',
+                        display: true
+                      }
+                    },
+
+                    scales: {
+                      xAxes: [{ display: true }],
+                      yAxes: [{ display: true }],
+                    },
+
+                    tooltips: {
+
+                      enabled: true,
+
+                      callbacks: {
+                        label: function (tooltipItem) {
+                          return tooltipItem.yLabel;
+                        }
+                      }
+                    },
+                    maintainAspectRatio: false
+                  }} />
+              </Tab>
+              <Tab eventKey="Doughnut" title="Doughnut">
+                <Chart
+                  type='Doughnut'
+                  backgroundcolor={this.state.chartDataDeathsVsRecovered.datasets.backgroundColor}
+                  label={this.state.chartDataDeathsVsRecovered.datasets.label}
+                  data={this.state.chartDataDeathsVsRecovered}
+                  options={{
+                    legend: {
+                      title: {
+                        text: 'Recoveries VS Deaths',
+                        display: true
+                      }
+                    },
+
+                    scales: {
+                      xAxes: [{ display: true }],
+                      yAxes: [{ display: true }],
+                    },
+
+                    tooltips: {
+
+                      enabled: true,
+
+                      callbacks: {
+                        label: function (tooltipItem) {
+                          return tooltipItem.yLabel;
+                        }
+                      }
+                    },
+                    maintainAspectRatio: false
+                  }} />
+              </Tab>
+            </Tabs>
+
           </div>
+       
+       </div>
 
-        </div>
-
-
-      
 
         {/* Charts */}
         <div className='row m-0 chartsContainer'>
 
           <div className='col-lg-6 p-1 chart'>
-            <Chart
-              type='Line'
-              backgroundcolor={this.state.chartDataActiveCasesLogarithmic.datasets.backgroundColor}
-              label={this.state.chartDataActiveCasesLogarithmic.datasets.label}
-              data={this.state.chartDataActiveCasesLogarithmic}
-              options={this.state.chartDataActiveCasesLogarithmic.options} />
+
+            <Tabs defaultActiveKey="Line" id="tabsActiveCases">
+              <Tab eventKey="Line" title="Line">
+                <Chart
+                  type='Line'
+                  backgroundcolor={this.state.chartDataActiveCasesLogarithmic.datasets.backgroundColor}
+                  label={this.state.chartDataActiveCasesLogarithmic.datasets.label}
+                  data={this.state.chartDataActiveCasesLogarithmic}
+                  options={this.state.chartDataActiveCasesLogarithmic.options} />
+              </Tab>
+              <Tab eventKey="Bar" title="Bar">
+                <Chart
+                  type='Bar'
+                  backgroundcolor={this.state.chartDataActiveCasesLogarithmic.datasets.backgroundColor}
+                  label={this.state.chartDataActiveCasesLogarithmic.datasets.label}
+                  data={this.state.chartDataActiveCasesLogarithmic}
+                  options={this.state.chartDataActiveCasesLogarithmic.options} />
+              </Tab>
+              <Tab eventKey="Doughnut" title="Doughnut">
+                <Chart
+                  type='Doughnut'
+                  backgroundcolor={this.state.chartDataActiveCasesLogarithmic.datasets.backgroundColor}
+                  label={this.state.chartDataActiveCasesLogarithmic.datasets.label}
+                  data={this.state.chartDataActiveCasesLogarithmic}
+                  options={this.state.chartDataActiveCasesLogarithmic.options} />
+              </Tab>
+            </Tabs>
+
           </div>
 
           <div className='col-lg-6 p-1 chart' >
-            <Chart
-              type='Bar'
-              backgroundcolor={this.state.chartDataDeathsVsRecovered.datasets.backgroundColor}
-              label={this.state.chartDataDeathsVsRecovered.datasets.label}
-              data={this.state.chartDataDeathsVsRecovered}
-              options={{
-                legend: {
-                  title: {
-                    display: true,
-                    text: 'Recoveries VS Deaths'
-                  }
-                },
 
-                scales: {
-                  xAxes: [{ display: true }],
-                  yAxes: [{ display: true }],
-                },
+            <Tabs defaultActiveKey="Line" id="tabsDeathsVsRecovered">
+              <Tab eventKey="Line" title="Line">
+                <Chart
+                  type='Line'
+                  backgroundcolor={this.state.chartDataDeathsVsRecovered.datasets.backgroundColor}
+                  label={this.state.chartDataDeathsVsRecovered.datasets.label}
+                  data={this.state.chartDataDeathsVsRecovered}
+                  options={{
+                    legend: {
+                      title: {
+                        display: true,
+                        text: 'Recoveries VS Deaths'
+                      }
+                    },
 
-                tooltips: {
+                    scales: {
+                      xAxes: [{ display: true }],
+                      yAxes: [{ display: true }],
+                    },
 
-                  enabled: true,
+                    tooltips: {
 
-                  callbacks: {
-                    label: function (tooltipItem) {
-                      return tooltipItem.yLabel;
-                    }
-                  }
-                },
-                maintainAspectRatio: false
-              }} />
+                      enabled: true,
+
+                      callbacks: {
+                        label: function (tooltipItem) {
+                          return tooltipItem.yLabel;
+                        }
+                      }
+                    },
+                    maintainAspectRatio: false
+                  }} />
+              </Tab>
+              <Tab eventKey="Bar" title="Bar">
+                <Chart
+                  type='Bar'
+                  backgroundcolor={this.state.chartDataDeathsVsRecovered.datasets.backgroundColor}
+                  label={this.state.chartDataDeathsVsRecovered.datasets.label}
+                  data={this.state.chartDataDeathsVsRecovered}
+                  options={{
+                    legend: {
+                      title: {
+                        display: true,
+                        text: 'Recoveries VS Deaths'
+                      }
+                    },
+
+                    scales: {
+                      xAxes: [{ display: true }],
+                      yAxes: [{ display: true }],
+                    },
+
+                    tooltips: {
+
+                      enabled: true,
+
+                      callbacks: {
+                        label: function (tooltipItem) {
+                          return tooltipItem.yLabel;
+                        }
+                      }
+                    },
+                    maintainAspectRatio: false
+                  }} />
+              </Tab>
+              <Tab eventKey="Doughnut" title="Doughnut">
+                <Chart
+                  type='Doughnut'
+                  backgroundcolor={this.state.chartDataDeathsVsRecovered.datasets.backgroundColor}
+                  label={this.state.chartDataDeathsVsRecovered.datasets.label}
+                  data={this.state.chartDataDeathsVsRecovered}
+                  options={{
+                    legend: {
+                      title: {
+                        display: true,
+                        text: 'Recoveries VS Deaths'
+                      }
+                    },
+
+                    scales: {
+                      xAxes: [{ display: true }],
+                      yAxes: [{ display: true }],
+                    },
+
+                    tooltips: {
+
+                      enabled: true,
+
+                      callbacks: {
+                        label: function (tooltipItem) {
+                          return tooltipItem.yLabel;
+                        }
+                      }
+                    },
+                    maintainAspectRatio: false
+                  }} />
+              </Tab>
+            </Tabs>
+
           </div>
-
+        
         </div>
 
 
@@ -881,30 +1255,28 @@ class App extends Component {
             <div className='col-12'>
               <p>Find the code of the project on <a href='https://github.com/TheoKondak/covid-19-cata-visualized' target='_blank' rel="noopener noreferrer" title='Find project on GitHub'>GitHub</a>
               </p>
-              <p><a href='https://github.com/TheoKondak/Covid-19-Data-Visualized/blob/master/README.md' target='_blank' rel="noopener noreferrer" >Changelog</a></p>
-              <p>This project is created with
+              <p><small><a href='https://github.com/TheoKondak/Covid-19-Data-Visualized/blob/master/README.md' target='_blank' rel="noopener noreferrer" >Changelog</a></small></p>
+              <p>This project is created with:
             <br />
-                <a href='https://github.com/facebook/create-react-app#readme' target='_blank' rel="noopener noreferrer" title='React Chart js 2'>React</a>
-                <br />
-                <a href='https://github.com/jerairrest/react-chartjs-2' target='_blank' rel="noopener noreferrer" title='React Chart js 2'>React Chart js 2</a>
-                <br />
-                <a href='https://github.com/yjose/reactjs-popup-burger-menu' target='_blank' rel="noopener noreferrer" title='React JS popup burger menu'>React js popup burger menu</a>
+                <small><a href='https://github.com/facebook/create-react-app#readme' target='_blank' rel="noopener noreferrer" title='React Chart js 2'>React</a></small>
+                <span><small> | </small> </span>
+                <small><a href='https://github.com/jerairrest/react-chartjs-2' target='_blank' rel="noopener noreferrer" title='React Chart js 2'>React Chart js 2</a></small>
+                <span><small> | </small> </span>
+                <small><a href='https://github.com/yjose/reactjs-popup-burger-menu' target='_blank' rel="noopener noreferrer" title='React JS popup burger menu'>React js popup burger menu</a></small>
               </p>
+
+              <p>API: <a href='https://github.com/pomber/covid19' title='Pomber Covid 19 JSON API' target='_blank' rel="noopener noreferrer">Covid19</a> by <a href='https://github.com/pomber' title='Pomber on Github' target='_blank' rel="noopener noreferrer">Rodrigo Pombo</a> </p>
               <p>
                 Copyright 2020 Theodoros Kondakos. All rights reserved
-            <a href='https://github.com/TheoKondak/Covid-19-Data-Visualized/blob/master/LICENSE' target='_blank' rel='noopener noreferrer' title='Fight Covid-19 with Folding @home'> View Licence information</a>
+            <a href='https://github.com/TheoKondak/Covid-19-Data-Visualized/blob/master/LICENSE' target='_blank' rel='noopener noreferrer' title='Fight Covid-19 with Folding @home'> View Licence Information</a>
               </p>
             </div>
 
           </div>
 
-
-
-        </div>
+   </div>
 
       </div> //App
-
-
 
     );
   }

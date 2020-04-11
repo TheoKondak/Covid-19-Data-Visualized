@@ -1,24 +1,29 @@
-.cardsContainer{
+.cardsContainer {
     justify-content: center;
-  }
+}
 
-.totalCases .cardPercentage{
+.totalCases .cardPercentage {
     display: none;
 }
 
-.card{
-    
+.card {
     padding: 5px 10px;
     border: 1px solid #666;
     border-radius: 2px;
-        border: 1px solid rgb(228, 229, 229);
+    border: 1px solid rgb(228, 229, 229);
 }
 
-.containerMetrics{
+.card:hover {
+    box-shadow: inset -2px -2px 8px rgba(255, 255, 255, 1), inset -2px -2px 12px rgba(255, 255, 255, 0.5), inset 2px 2px 4px rgba(9255, 255, 255, 0.1), inset 2px 2px 8px rgba(0, 0, 0, 0.15);
+    transition-duration: .2s;
+    transition-delay: .1s;
+}
+
+.containerMetrics {
     min-height: 54px;
 }
 
-.cardTitle{
+.cardTitle {
     font-weight: 500;
     font-size: 14px;
     text-transform: uppercase;
@@ -26,7 +31,7 @@
     margin-bottom: 0;
 }
 
-.cardMetrics{
+.cardMetrics {
     font-size: 20px;
     font-weight: 700;
     text-align: left;
@@ -34,7 +39,7 @@
     float: left;
 }
 
-.cardPercentage{
+.cardPercentage {
     font-size: 12px;
     padding-left: 5px;
     text-align: left;
@@ -43,26 +48,26 @@
     vertical-align: text-bottom;
 }
 
-.cardPercentage-percentage{
-     color: green;
+.cardPercentage-percentage {
+    color: green;
 }
 
-.cardPercentage-percentage:after{
+.cardPercentage-percentage:after {
     content: "%";
 }
 
-.cardPercentage-text{
-    padding:0;
+.cardPercentage-text {
+    padding: 0;
 }
 
-
 /* Cards Chart */
-.containerMetricsChart{
+
+.containerMetricsChart {
     width: 100%;
     max-height: 50px;
 }
 
-.containerMetricsChart canvas{
-  display: block;
-  height: 50px !important;
+.containerMetricsChart canvas {
+    display: block;
+    height: 50px !important;
 }

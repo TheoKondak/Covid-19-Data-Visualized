@@ -7,6 +7,8 @@ class Chart extends Component {
   
   render() {
 
+// console.log(this.props.data)
+
     if (this.props.type === 'Line')
       return (
         <div className="Line">
