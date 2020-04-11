@@ -1255,7 +1255,7 @@ class App extends Component {
             <div className='col-12'>
               <p>Find the code of the project on <a href='https://github.com/TheoKondak/covid-19-cata-visualized' target='_blank' rel="noopener noreferrer" title='Find project on GitHub'>GitHub</a>
               </p>
-              <p><small><a href='https://github.com/TheoKondak/Covid-19-Data-Visualized/blob/master/README.md' target='_blank' rel="noopener noreferrer" >Changelog</a></small></p>
+              <p><small><a href='https://raw.githubusercontent.com/TheoKondak/Covid-19-Data-Visualized/master/README.md' target='_blank' rel="noopener noreferrer" >Changelog</a></small></p>
               <p>This project is created with:
             <br />
                 <small><a href='https://github.com/facebook/create-react-app#readme' target='_blank' rel="noopener noreferrer" title='React Chart js 2'>React</a></small>
