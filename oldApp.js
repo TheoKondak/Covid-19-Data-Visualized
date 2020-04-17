@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.png';
 import './App.scss';
+import { usePopper } from 'react-popper';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Tabs, Tab, OverlayTrigger, Popover, PopoverTitle, PopoverContent } from 'react-bootstrap';
 
@@ -76,7 +77,17 @@ class App extends Component {
           hidden: false
         }],
 
-      
+      options: {
+        title: {
+          display: true,
+          text: 'Confirmed Cases'
+        },
+        scales: {
+          yAxes: [{
+            type: 'logarithmic'
+          }]
+        }
+      },
     },
 
     cardsData: {
@@ -132,7 +143,7 @@ class App extends Component {
 
     },
 
-    countryListArrayBurgerMenu: []
+    countryList: []
   }
 
 
@@ -144,152 +155,91 @@ class App extends Component {
     xhr.responseType = 'json';
     xhr.onload = () => {
 
-      // let defaultCountry = [...xhr.response.US];
+      let defaultCountry = [...xhr.response.US];
       let countryList = xhr.response;
-      let countryListArrayBurgerMenu = [];
+      let countryListArray = [];
+      let confirmedCases = [];
+      let activeCasesLogarithmic = [];
+      let deaths = [];
+      let recovered = [];
+      let labels = [];
+      let dataPosition = 0;
+      let cardChartConfirmed = [];
+      let cardsChartNewCases = [];
+      let cardsChartActiveCases = [];
+      let cardsChartDeaths = [];
+      let cardsChartRecovered = [];
       let itterator = 0;
 
-      let globalData = {
-        labels: [],
-        confirmedCases: [],
-        deceased: [],
-        recovered: [],
-        newCases: [],
-        activeCases: [],
-
-        //Logarithmic
-        confirmedCasesLogarithmic: [],
-        activeCasesLogarithmic: [],
-        deceasedLogarithmic: [],
-        recoveredLogarithmic: [],
-
-        //Cards
-        cardConfirmed: 0,
-        cardDeceased: 0,
-        cardRecovered: 0,
-        cardNewCases: 0,
-        cardActiveCases: 0,
-
-        //Previous Date
-        newCasesPrevDay: 0
+      // Create Country List Object with ID, Country Name , Country Data
+      for (let countryName in countryList) {
+        countryListArray.push({ countryId: itterator, countryName: countryName, countryData: countryList[countryName] });
+        itterator++
       }
 
-        
+      // Fetched Data Calculations
+      // Calculate for Selected Country
+      for (let [key, value] of Object.entries(defaultCountry)) {
+        if (value.recovered !== 0 || value.deaths !== 0) { // Start Displaying Since the first Death OR the first recovered occured
+          confirmedCases[dataPosition] = value.confirmed;
+          deaths[dataPosition] = value.deaths;
+          recovered[dataPosition] = value.recovered;
+          labels[dataPosition] = value.date;
 
-      // Calculate Global Confirmed Cases
-      const resConfirmed = Object.values(countryList).reduce((acc, curr) => {
-        curr.forEach(item => {
-          acc[item.date] = (acc[item.date] || 0) + item.confirmed;
-        });
-        return acc;
-      }, {});
-
-      for (let [key, value] of Object.entries(resConfirmed)) {
-        globalData.confirmedCases.push(value);
-      }
-
-
-      // Calculate Global Deceased
-      const resDeceased = Object.values(countryList).reduce((acc, curr) => {
-        curr.forEach(item => {
-          acc[item.date] = (acc[item.date] || 0) + item.deaths;
-        });
-
-        return acc;
-      }, {});
-
-      for (let [key, value] of Object.entries(resDeceased)) {
-        globalData.deceased.push(value);
-      }
-
-
-
-      // Calculate Global Recovered
-      const resRecovered = Object.values(countryList).reduce((acc, curr) => {
-        curr.forEach(item => {
-          acc[item.date] = (acc[item.date] || 0) + item.recovered;
-        });
-        return acc;
-      }, {});
-
-      for (let [key, value] of Object.entries(resRecovered)) {
-        globalData.recovered.push(value);
-      }
-
-
-
-      //Calculate New Cases
-      for (let i = 0; i < globalData.confirmedCases.length; i++) {
-        globalData.newCases[i] = globalData.confirmedCases[i] - (globalData.confirmedCases[i - 1] || globalData.confirmedCases[i]);
-      }
-
-      //Calculate Active Cases
-      for (let i = 0; i < globalData.confirmedCases.length; i++) {
-        globalData.activeCases[i] = globalData.confirmedCases[i] - (globalData.recovered[i] - globalData.deceased[i]);
-      }
-
-      //Labels
-      for (let [key, value] of Object.entries(countryList)) {
-        if (key === "US") {
-          for (let date in value) globalData.labels.push(value[date].date);
+          activeCasesLogarithmic[dataPosition] = value.confirmed - (value.deaths + value.recovered);
+          // Calculations for Charts for cards
+          cardChartConfirmed = confirmedCases[dataPosition] - confirmedCases[dataPosition - 1];
+          cardsChartNewCases[dataPosition] = confirmedCases[dataPosition] - confirmedCases[dataPosition - 1];
+          cardsChartActiveCases[dataPosition] = value.confirmed - (value.deaths + value.recovered);
+          cardsChartDeaths[dataPosition] = deaths[dataPosition] - deaths[dataPosition - 1];
+          cardsChartRecovered[dataPosition] = recovered[dataPosition] - recovered[dataPosition - 1];
+          dataPosition += 1;
         }
-
-        //Cards 
-        globalData.cardConfirmed += value[value.length - 1].confirmed;
-        globalData.cardDeceased += value[value.length - 1].deaths;
-        globalData.cardRecovered += value[value.length - 1].recovered;
-        globalData.newCasesPrevDay += value[value.length - 2].confirmed;
-        globalData.cardActiveCases = globalData.cardConfirmed - (globalData.cardRecovered - globalData.deceased)
       }
 
-      globalData.cardNewCases = globalData.cardConfirmed - globalData.newCasesPrevDay;
-      globalData.cardActiveCases = globalData.cardConfirmed - (globalData.cardDeceased + globalData.cardRecovered);
-
-      
-
-// Create Country List Object with ID, Country Name , Country Data
-for (let countryName in countryList) {
-  countryListArrayBurgerMenu.push({ countryId: itterator, countryName: countryName, countryData: countryList[countryName] });
-  itterator++
-}
+      console.log(cardsChartRecovered);
 
       this.setState({
         //Set Default Country State
         chartDataTotalCases: {
 
-          labels: globalData.labels,
+          labels: labels,
 
           datasets: [
             {
               label: 'Confirmed Cases',
-              data: globalData.confirmedCases,
+              data: confirmedCases,
               backgroundColor: 'rgba(65,131,196,0.4)',
               hidden: false
-            }]
+            }],
+
+          options: {
+
+          }
         },
 
         chartDataDeathsVsRecovered: {
 
-          labels: globalData.labels,
+          labels: labels,
 
           datasets: [
             {
               label: 'Confirmed Cases',
-              data: globalData.confirmedCases,
+              data: confirmedCases,
               backgroundColor: 'rgba(65,131,196,0.4)',
               hidden: true
             },
 
             {
               label: 'Deaths',
-              data: globalData.deceased,
+              data: deaths,
               // backgroundColor: backgroundColors,
               backgroundColor: 'rgba(249, 54, 80, 0.2)'
             },
 
             {
               label: 'Recovered',
-              data: globalData.recovered,
+              data: recovered,
               // backgroundColor: backgroundColors,
               backgroundColor: 'rgba(249, 254, 239, 0.9)'
             }
@@ -306,97 +256,106 @@ for (let countryName in countryList) {
 
         chartDataActiveCasesLogarithmic: {
 
-          labels: globalData.labels,
+          labels: labels,
 
           datasets: [
             {
               label: 'Active Cases (Logarithmic)',
-              data: globalData.activeCases,
+              data: activeCasesLogarithmic,
               backgroundColor: 'rgba(65,131,196,0.4)',
               hidden: false
             }],
 
-         
+          options: {
+            title: {
+              display: true,
+              text: 'Confirmed Cases'
+            },
+            scales: {
+              yAxes: [{
+                type: 'logarithmic'
+              }]
+            }
+          },
 
         },
 
         cardsData: {
-          // totalCasesWorldWide: 1,
-          // activeCasesWorldWide: 1,
-          // deceasedWordlWide: 1,
-          // dischargedWorldWide: 1,
-          totalCases: globalData.cardConfirmed,
-          activeCases: globalData.cardActiveCases,
-          deceased: globalData.cardDeceased,
-          discharged: globalData.cardRecovered,
-          newCases: globalData.cardNewCases,
-          // percentageActiveCases: 2
+          totalCasesWorldWide: 1,
+          activeCasesWorldWide: 1,
+          deceasedWordlWide: 1,
+          dischargedWorldWide: 1,
+          totalCases: confirmedCases[confirmedCases.length - 1],
+          activeCases: confirmedCases[confirmedCases.length - 1] - recovered[recovered.length - 1] - deaths[deaths.length - 1],
+          deceased: deaths[deaths.length - 1],
+          discharged: recovered[recovered.length - 1],
+          newCases: confirmedCases[confirmedCases.length - 1] - confirmedCases[confirmedCases.length - 2],
+          percentageActiveCases: 2
         },
 
         cardsChartsData: {
 
           cardsChartsNewCases: {
-            labels: globalData.labels,
+            labels: labels,
             datasets: [
               {
                 label: '',
-                data: globalData.newCases,
+                data: cardsChartNewCases,
                 backgroundColor: () => {
-                  return (globalData.newCases[globalData.newCases.length - 1] > globalData.newCases[globalData.newCases.length - 2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
+                  return (cardsChartNewCases[cardsChartNewCases.length - 1] > cardsChartNewCases[cardsChartNewCases.length - 2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
                 }
               }]
           },
 
           cardsChartsActiveCases: {
-            labels: globalData.labels,
+            labels: labels,
             datasets: [
               {
                 label: '',
-                data: globalData.activeCases,
+                data: cardsChartActiveCases,
                 backgroundColor: () => {
-                  return (globalData.activeCases[globalData.activeCases.length - 1] > globalData.activeCases[globalData.activeCases.length - 2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
+                  return (cardsChartActiveCases[cardsChartActiveCases.length - 1] > cardsChartActiveCases[cardsChartActiveCases.length - 2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
                 }
               }]
           },
           cardsChartsDeaths: {
-            labels: globalData.labels,
+            labels: labels,
             datasets: [
               {
                 label: '',
-                data: globalData.deceased,
+                data: cardsChartDeaths,
                 backgroundColor: () => {
-                  return (globalData.deceased[globalData.deceased.length - 1] > globalData.deceased[globalData.deceased.length - 2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
+                  return (cardsChartDeaths[cardsChartDeaths.length - 1] > cardsChartDeaths[cardsChartDeaths.length - 2]) ? 'rgba(220,53,69,0.9)' : 'rgba(40, 167, 69, 0.9)';
                 }
               }]
           },
 
           cardsChartsRecovered: {
-            labels: globalData.labels,
+            labels: labels,
             datasets: [
               {
                 label: '',
-                data: globalData.recovered,
+                data: cardsChartRecovered,
                 backgroundColor: () => {
-                  return (globalData.recovered[globalData.recovered.length - 1] > globalData.recovered[globalData.recovered.length - 2]) ? 'rgba(40, 167, 69, 0.9)' : 'rgba(220,53,69,0.9)';
+                  return (cardsChartRecovered[cardsChartRecovered.length - 1] > cardsChartRecovered[cardsChartRecovered.length - 2]) ? 'rgba(40, 167, 69, 0.9)' : 'rgba(220,53,69,0.9)';
                 }
               }]
           }
         },
 
-        countryName: 'Global Data',
+        countryName: 'USA',
 
-        countryListArrayBurgerMenu: countryListArrayBurgerMenu
+        countryList: countryListArray
       })
     };
     xhr.send();
-
-
   }
 
 
 
   changeCountryHandler = (countryId, countryName, countryData) => {
     let confirmedCases = [];
+    let activeCases = [];
     let deaths = [];
     let recovered = [];
     let labels = [];
@@ -421,12 +380,13 @@ for (let countryName in countryList) {
         cardsChartNewCases[dataPosition] = confirmedCases[dataPosition] - confirmedCases[dataPosition - 1];
         cardsChartActiveCases[dataPosition] = value.confirmed - (value.deaths + value.recovered);;
         cardsChartDeaths[dataPosition] = deaths[dataPosition] - deaths[dataPosition - 1];
-        // cardsChartRecovered[dataPosition] = recovered[dataPosition] - recovered[dataPosition - 1];
-        if (dataPosition === 0) cardsChartRecovered[dataPosition] = 0;
-        else cardsChartRecovered[dataPosition] = recovered[dataPosition] - recovered[dataPosition - 1];
+        cardsChartRecovered[dataPosition] = recovered[dataPosition] - recovered[dataPosition - 1]
+
         dataPosition += 1;
       }
     }
+
+
 
     this.setState({
 
@@ -482,15 +442,16 @@ for (let countryName in countryList) {
 
       chartDataActiveCasesLogarithmic: {
 
-      labels: labels,
+        labels: labels,
 
-      datasets: [
+        datasets: [
           {
             label: 'Active Cases (Logarithmic)',
             data: activeCasesLogarithmic,
             backgroundColor: 'rgba(65,131,196,0.4)',
             hidden: false
           }]
+
       },
 
       cardsData: {
@@ -505,6 +466,7 @@ for (let countryName in countryList) {
         newCases: confirmedCases[confirmedCases.length - 1] - confirmedCases[confirmedCases.length - 2],
         percentageActiveCases: 2
       },
+
 
       cardsChartsData: {
 
@@ -564,6 +526,9 @@ for (let countryName in countryList) {
   }
 
   render() {
+
+
+
     return (
       <div className="container-fluid app-container ">
 
@@ -579,7 +544,6 @@ for (let countryName in countryList) {
               <h1>Covid-19 Data Visualized</h1>
               <small>v0.04</small>
             </div>
-
           </div>
         </div>
 
@@ -1131,14 +1095,14 @@ for (let countryName in countryList) {
             </Tabs>
 
           </div>
-
-        </div>
+       
+       </div>
 
 
         {/* Charts */}
         <div className='row m-0 chartsContainer'>
 
-          <div className='col-lg-6 p-1 chart logarithmic'>
+          <div className='col-lg-6 p-1 chart'>
 
             <Tabs defaultActiveKey="Line" id="tabsActiveCases">
               <Tab eventKey="Line" title="Line">
@@ -1147,17 +1111,7 @@ for (let countryName in countryList) {
                   backgroundcolor={this.state.chartDataActiveCasesLogarithmic.datasets.backgroundColor}
                   label={this.state.chartDataActiveCasesLogarithmic.datasets.label}
                   data={this.state.chartDataActiveCasesLogarithmic}
-                  options={{
-                    title: {
-                      display: true,
-                      text: 'Active Cases (Logarithmic)'
-                    },
-                    scales: {
-                      yAxes: [{
-                        type: 'logarithmic'
-                      }]
-                    }
-                  }} />
+                  options={this.state.chartDataActiveCasesLogarithmic.options} />
               </Tab>
               <Tab eventKey="Bar" title="Bar">
                 <Chart
@@ -1165,17 +1119,7 @@ for (let countryName in countryList) {
                   backgroundcolor={this.state.chartDataActiveCasesLogarithmic.datasets.backgroundColor}
                   label={this.state.chartDataActiveCasesLogarithmic.datasets.label}
                   data={this.state.chartDataActiveCasesLogarithmic}
-                  options={{
-                    title: {
-                      display: true,
-                      text: 'Active Cases (Logarithmic)'
-                    },
-                    scales: {
-                      yAxes: [{
-                        type: 'logarithmic'
-                      }]
-                    }
-                  }} />
+                  options={this.state.chartDataActiveCasesLogarithmic.options} />
               </Tab>
               <Tab eventKey="Doughnut" title="Doughnut">
                 <Chart
@@ -1183,17 +1127,7 @@ for (let countryName in countryList) {
                   backgroundcolor={this.state.chartDataActiveCasesLogarithmic.datasets.backgroundColor}
                   label={this.state.chartDataActiveCasesLogarithmic.datasets.label}
                   data={this.state.chartDataActiveCasesLogarithmic}
-                  options={{
-                    title: {
-                      display: true,
-                      text: 'Active Cases (Logarithmic)'
-                    },
-                    scales: {
-                      yAxes: [{
-                        type: 'logarithmic'
-                      }]
-                    }
-                  }} />
+                  options={this.state.chartDataActiveCasesLogarithmic.options} />
               </Tab>
             </Tabs>
 
@@ -1301,21 +1235,21 @@ for (let countryName in countryList) {
             </Tabs>
 
           </div>
-
+        
         </div>
 
 
         {/* Burger Menu */}
         <div className='cardContainer countryList'>
           <Burgermenu
-            countryList={this.state.countryListArrayBurgerMenu}
+            countryList={this.state.countryList}
             click={this.changeCountryHandler}
           />
         </div>
 
 
         {/* Footer */}
-        <div className='container footer' id='footer'>
+        <div className='container footer'>
           <div className='row'>
             <hr className='col-10 footer-hr' />
             <div className='col-12'>
@@ -1340,7 +1274,7 @@ for (let countryName in countryList) {
 
           </div>
 
-        </div>
+   </div>
 
       </div> //App
 

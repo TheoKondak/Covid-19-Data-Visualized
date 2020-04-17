@@ -19,6 +19,12 @@ const contentStyle = {
 
 
 const Burgermenu = (props) => {
+//   console.log('Country List:');
+// console.log(props.countryList);
+
+// console.log('click:');
+// console.log(props.click);
+
   return (
     <div style={styles}>
       <Popup
