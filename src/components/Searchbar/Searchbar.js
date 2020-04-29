@@ -6,32 +6,37 @@ import Countrylist from '../Countrylist/Countrylist';
 class Searchbar extends React.Component {
 
     
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             search: ''
         };
     }
 
 
- 
+
+    
+    clickEventHandler = (countryId, countryName, countryData) => {
+        this.props.click(countryId, countryName, countryData);
+      }
+    
     updateSearch(event){
         this.setState({search: event.target.value.substring(0, 25)})
     };
     
     render() {
-
-       
         
-        let listOfCountries = this.props.countriesList.map(country => {
-            return country.countryName;
+        // console.log(this.props);
+
+        let listOfCountries = this.props.countryList.map(country => {
+            return country;
         })
         
         let filteredCountries = listOfCountries.filter(country => {
-           return country.indexOf(this.state.search) !== -1;
+           return country.countryName.indexOf(this.state.search) !== -1;
         })
         
-// console.log(this.props)
+
 
         return (
             <div className='searchbar'>
@@ -44,10 +49,12 @@ class Searchbar extends React.Component {
 
                 <ul>
         <li>{filteredCountries.map(country => {
-            return <Countrylist 
-            key={country}
-            countryName={country} 
-            onClick={this.props.click}
+                        
+
+        return <Countrylist 
+            key={country.countryName}
+            countryName={country.countryName} 
+            click={() => { this.clickEventHandler(country.countryId, country.countryName, country.countryData); }}
             />
         })}</li>
                 </ul>

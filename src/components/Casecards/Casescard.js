@@ -1,11 +1,12 @@
 import React from 'react';
+
 import "./Casescard.css"
 
 import Chart from '../Chart/Chart';
 
 const Card = (props) => {
 
-  
+
 
     return (
         <div className={props.class}>
@@ -21,15 +22,20 @@ const Card = (props) => {
                 </div>
             </div>
 
-<div className='containerMetricsChart'>
-            <Chart
-                type={props.type}
-               
-                
-                data={props.data}
-                options={props.options}
-            />
-</div>
+            <div className='containerMetricsChart'>
+                <Chart
+                    type={props.type}
+
+
+                    data={props.data}
+                    options={props.options}
+                />
+            </div>
+            <hr className='hrCaseCard' />
+            <div className='fontAwesome-downArrow-container'>
+                <img src={require('./sort-down-solid.svg')} className='shortDownSolid' />
+            </div>
+
         </div>
     );
 }

@@ -1,6 +1,7 @@
 // import React from "react";
 import React, { Component } from 'react';
 import Countrylist from '../Countrylist/Countrylist';
+import Searchbar from '../Searchbar/Searchbar';
 
 import './Menu.css';
 
@@ -14,9 +15,17 @@ class Menu extends Component {
   }
 
   render() {
-    return (<div className="menu clear" id='grid'>
-
+    return (
     
+   
+    
+    <div className='burgerMenuContainer'>
+
+ 
+
+
+<div className="menu clear" id='grid'>
+   
           {this.props.countryList.map(country => {
 
             let countryId = [];
@@ -35,6 +44,8 @@ class Menu extends Component {
           })
           }
         </div>
+
+    </div>
   
     )
   }

@@ -4,8 +4,13 @@ import './App.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Tabs, Tab, OverlayTrigger, Popover, PopoverTitle, PopoverContent } from 'react-bootstrap';
 
+
+
 // BurgerMenu
 import Burgermenu from './components/Burgermenu/Burgermenu';
+
+//SearchBar
+import Searchbar from './components/Searchbar/Searchbar';
 
 // Components
 import Chart from './components/Chart/Chart';
@@ -245,16 +250,19 @@ class App extends Component {
       globalData.cardNewCases = globalData.cardConfirmed - globalData.newCasesPrevDay;
       globalData.cardActiveCases = globalData.cardConfirmed - (globalData.cardDeceased + globalData.cardRecovered);
 
-      
+      // console.log('Global Data Confirmed Cases: ');
+      // console.log(globalData.confirmedCases);
 
 // Create Country List Object with ID, Country Name , Country Data
 for (let countryName in countryList) {
   countryListArrayBurgerMenu.push({ countryId: itterator, countryName: countryName, countryData: countryList[countryName] });
+//  console.log('Itteration: ' + countryName);
+//   console.log(countryList[countryName]);
   itterator++
 }
 
       this.setState({
-        //Set Default Country State
+        //Default option = Global Data
         chartDataTotalCases: {
 
           labels: globalData.labels,
@@ -564,6 +572,9 @@ for (let countryName in countryList) {
   }
 
   render() {
+
+    // console.log(this.state);
+
     return (
       <div className="container-fluid app-container ">
 
@@ -1307,10 +1318,15 @@ for (let countryName in countryList) {
 
         {/* Burger Menu */}
         <div className='cardContainer countryList'>
-          <Burgermenu
+          {/* <Burgermenu
             countryList={this.state.countryListArrayBurgerMenu}
             click={this.changeCountryHandler}
-          />
+          /> */}
+
+<Searchbar
+      countryList={this.state.countryListArrayBurgerMenu}
+      click={this.changeCountryHandler}
+      />
         </div>
 
 

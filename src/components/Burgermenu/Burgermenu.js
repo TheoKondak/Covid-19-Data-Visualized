@@ -22,8 +22,8 @@ const Burgermenu = (props) => {
 //   console.log('Country List:');
 // console.log(props.countryList);
 
-// console.log('click:');
-// console.log(props.click);
+console.log('click:');
+console.log(props.click);
 
   return (
     <div style={styles}>
@@ -34,7 +34,7 @@ const Burgermenu = (props) => {
         closeOnDocumentClick={true}
         trigger={open => <BurgerIcon open={open} />}
       >
-        {close => <Menu
+        {close => <   Menu
           close={close}
           countryList={props.countryList}
           click={props.click}
