@@ -5,7 +5,7 @@ import './Searchbar.scss';
 
 
 
-class Searchbar extends React.Component {
+class Searchbardesktop extends React.Component {
 
     
     constructor(props) {
@@ -20,7 +20,7 @@ class Searchbar extends React.Component {
     
     clickEventHandler = (countryId, countryName, countryData) => {
         this.props.click(countryId, countryName, countryData); 
-        this.props.close();
+        
       }
     
     updateSearch(event){
@@ -79,5 +79,5 @@ class Searchbar extends React.Component {
 
 }
 
-export default Searchbar;
+export default Searchbardesktop;
 

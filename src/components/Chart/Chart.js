@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Line, Doughnut, Bar } from 'react-chartjs-2';
-import "./Chart.css";
+import "./Chart.scss";
 
 class Chart extends Component {
 

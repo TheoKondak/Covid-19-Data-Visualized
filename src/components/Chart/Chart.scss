@@ -1,3 +1,6 @@
+@import '../../colors.scss';
+
+
 .chartsContainer {
   display: flex;
   justify-content: space-evenly;
@@ -6,16 +9,31 @@
 .Bar, .Line, .Doughnut {
   position: relative;
   height: 400px;
-  max-height: 440px;
+    max-height: 440px;
+    
 }
 
-.app-container {
-  max-width: 1600px;
-}
+
 
 .chart {
-  margin: 16px 0 10px 0;
+  margin: 16px 10px 10px 10px;
+  background-color: $background-color-light;
+  border-radius: 10px;
 }
+
+
+// Tab  (for Charts)
+.nav-tabs{
+  border: none;
+  
+}
+
+.tab-content{
+ border: none;
+ padding: 10px;
+}
+
+
 
 /* 
   ##Device = Desktops

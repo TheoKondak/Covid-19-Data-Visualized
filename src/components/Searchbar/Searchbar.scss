@@ -1,0 +1,72 @@
+@import '../../colors.scss';
+
+/* Searchbar */
+.searchBar-container{
+    background: $base-background-color;
+    max-height: 1418px;
+}
+
+
+.searchBar{
+    text-align: center;
+   
+   height: 100%;
+   // background-color: rgba(31, 40, 62, .6);
+   background-image: url();
+    background-size: cover;
+
+    background-image: 
+    /* top, transparent red */
+    linear-gradient(
+      $base-background-color-semitransparent, 
+      $base-background-color-semitransparent
+    ),
+    /* your image */
+    url(./media/searchbar-background.jpg);
+
+}
+
+.searchBar-h3{
+   text-transform: uppercase;
+   font-size: 22px;
+   color: $text-color-light;
+   font-weight:200;
+   margin-block-end: 0px;
+  
+}
+
+.searchBar-hr{
+   width:  90%;
+   margin: 25px auto;
+   border-top: 1px solid rgba(181,181,181,0.4);
+}
+
+.searchBar input{
+   width: 74%;
+  
+   height: 50px;
+   
+   
+   color: #a9afbbd1;
+   text-align: center;
+   text-transform: uppercase;
+   padding: 0 20px;
+   
+   border-radius: 5px;
+   border:none;
+   background-color:rgba(31, 40, 62, .9);
+}
+
+.searchBar input:focus{
+   outline: none;
+}
+
+.header{
+   max-width: 262px;
+}
+
+.header small{
+   color: green;
+   text-align: right;
+   margin-top: -3px;
+}

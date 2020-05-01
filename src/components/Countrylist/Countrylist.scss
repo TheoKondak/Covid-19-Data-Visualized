@@ -1,0 +1,116 @@
+
+@import '../../colors.scss';
+
+  .popup-overlay{
+    background-color: rgba(251,251,251, 0.9) !important;
+}
+
+.popup-content{
+  margin-left: 0!important;
+  margin-right: 0!important;
+  width: 100% !important;
+
+}
+
+  .burger-menu{
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+}
+
+.burger-menu:after{
+    content: '';
+    // background-image: url(./media/globe-europe-solid.svg);
+    // -webkit-mask: url(./media/globe-europe-solid.svg) no-repeat ;
+    mask: url(./media/globe-europe-solid.svg) no-repeat;
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    // mask-position: -10px;
+
+background-color: $base-background-color;
+
+    // background-repeat: no-repeat;
+    // filter: invert(0.2);
+
+    width: 40px;
+    height: 40px;
+    top: 4.49px;
+    right: 4.49px;
+    position: absolute;
+
+    // padding: 10px 20px;
+    display: inline-block;
+}
+
+.bar1,.bar2,.bar3{
+    display: none;
+}
+
+  .country{
+    width: auto;
+    margin: 0 auto;
+    background-color: rgba(0,0,0,0);
+  }
+
+  .countryList{
+    max-height: 1200px;
+}
+
+  /* Cards Down Arrow */
+.fontAwesome-downArrow-container{
+  width: 100%;
+}
+
+.hrCaseCard{
+   margin: 5px 0 0px 0;
+}
+
+.shortDownSolid{
+   width: 10px;
+   display: block;
+   margin: 0 auto;
+}
+
+.title-metrics-container{
+
+  margin-top: -30px;
+  background-color:rgba(32, 41, 64, 1);
+  padding: 10px;
+  border-radius: 4px;
+/*     box-shadow: inset -2px -2px 8px rgba(255, 255, 255, 1), inset -2px -2px 12px rgba(255, 255, 255, 0.5), inset 2px 2px 4px rgba(9255, 255, 255, 0.1), inset 2px 2px 8px rgba(0, 0, 0, 0.15); */
+  transition-duration: .2s;
+  transition-delay: .1s;
+}
+
+.card:hover .title-metrics-container{
+  margin-top: -34px;
+  margin-bottom: 4px;
+  
+   transition-duration: .2s;
+  transition-delay: .1s;
+}
+
+
+.countryItemBtn {
+  width: 86%;
+  background-color: rgba(32, 41, 64, 0.0);
+  color: $text-color-light;
+  text-transform: uppercase;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 5px;
+  transition-duration: 0.4s;
+}
+
+.countryItemBtn:hover{
+  background-color:rgba(51, 58, 78, 0.4);
+  color: rgba(169,176,187,1);
+  
+  transition-duration: 0.4s;
+}
+
+.countryItemBtn:focus{
+  outline: none;
+}

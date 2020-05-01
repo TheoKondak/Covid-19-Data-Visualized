@@ -2,7 +2,7 @@ import React from 'react';
 import Popup from "reactjs-popup";
 import BurgerIcon from "./BurgerIcon";
 import Menu from "./Menu";
-import "./Burgermenu.css";
+import "./Burgermenu.scss";
 
 
 
@@ -22,8 +22,7 @@ const Burgermenu = (props) => {
 //   console.log('Country List:');
 // console.log(props.countryList);
 
-console.log('click:');
-console.log(props.click);
+
 
   return (
     <div style={styles}>
@@ -37,6 +36,8 @@ console.log(props.click);
         {close => <   Menu
           close={close}
           countryList={props.countryList}
+
+          
           click={props.click}
         />}
       </Popup>

@@ -1,0 +1,112 @@
+@import '../../colors.scss';
+
+.cardsContainer {
+    justify-content: center;
+}
+
+.popover{
+    left: -5px !important;
+}
+
+.totalCases .cardPercentage {
+    display: none;
+}
+
+.card {
+    padding: 5px 10px;
+    border-radius: 2px;
+    height: 120px;
+    /* border: 1px solid rgb(228, 229, 229); */
+    color: white;
+    transition-duration: .2s;
+    transition-delay: .1s;
+   background-color: $background-color-light;
+}
+
+.card:hover {
+  
+     transition-duration: .2s;
+    transition-delay: .1s;
+}
+
+.containerMetrics {
+    
+}
+
+
+.title-metrics-container{
+    min-height: 66px;
+    margin-top: -30px;
+    background-color:$background-color-orange;
+    padding: 10px;
+    border-radius: 4px;
+/*     box-shadow: inset -2px -2px 8px rgba(255, 255, 255, 1), inset -2px -2px 12px rgba(255, 255, 255, 0.5), inset 2px 2px 4px rgba(9255, 255, 255, 0.1), inset 2px 2px 8px rgba(0, 0, 0, 0.15); */
+    transition-duration: .2s;
+    transition-delay: .1s;
+}
+
+.card:hover .title-metrics-container{
+    margin-top: -34px;
+    margin-bottom: 4px;
+    
+     transition-duration: .2s;
+    transition-delay: .1s;
+}
+
+
+.cardTitle {
+    font-weight: 400;
+    letter-spacing: 1px;
+    font-size: 14px;
+    text-transform: uppercase;
+    text-align: left;
+    margin-bottom: 0;
+}
+
+.cardMetrics {
+    font-size: 18px;
+    font-weight: 500;
+    text-align: left;
+    line-height: 24px;
+    float: left;
+}
+
+.cardPercentage {
+    font-size: 12px;
+    padding-left: 5px;
+    text-align: left;
+    float: left;
+    line-height: 30px;
+    vertical-align: text-bottom;
+}
+
+.cardPercentage-percentage {
+    color: $text-success;
+}
+
+.cardPercentage-percentage:after {
+    content: "%";
+}
+
+.cardPercentage-text {
+    padding: 0;
+}
+
+/* Cards Chart */
+
+.card .Bar{
+    height:60px;
+    max-height: 60px;
+    margin-top: 5px;
+    background-color: $background-color-transparent;
+}
+
+.containerMetricsChart {
+    width: 100%;
+    max-height: 52px;
+}
+
+.containerMetricsChart canvas {
+    display: block;
+    height: 50px !important;
+}
