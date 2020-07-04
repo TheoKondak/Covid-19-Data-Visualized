@@ -299,7 +299,7 @@ class App extends Component {
               label: 'Recovered',
               data: globalData.recovered,
               // backgroundColor: backgroundColors,
-              backgroundColor: 'rgba(249, 254, 239, 0.9)'
+              backgroundColor: 'rgba(40, 167, 69, .9)'
             }
 
           ],
@@ -586,8 +586,6 @@ class App extends Component {
               click={this.changeCountryHandler}
             />
           </div>
-
-
 
 
           <div className='col-xl-9 ml-xl-1'>
@@ -971,6 +969,12 @@ class App extends Component {
                           yAxes: [{ display: true }],
                         },
 
+                        elements: {
+                          point: {
+                            radius: 0
+                          }
+                          },
+
                         tooltips: {
 
                           enabled: true,
@@ -1001,10 +1005,27 @@ class App extends Component {
                         },
 
                         scales: {
-                          xAxes: [{ display: true }],
-                          yAxes: [{ display: true }],
+                          xAxes: [{ display: true, 
+                          
+                           
+                            ticks: {
+                                autoSkip: true,
+                                maxTicksLimit: 20
+                            }
+                          
+                          
+                          }],
+                          yAxes: [{ display: true,
+                          
+                            
+                            ticks: {
+                                autoSkip: true,
+                                maxTicksLimit: 20
+                            }
+                          
+                          }],
                         },
-
+                   
                         tooltips: {
 
                           enabled: true,
@@ -1019,7 +1040,7 @@ class App extends Component {
                       }} />
 
                   </Tab>
-                  <Tab eventKey="Doughnut" title="Doughnut">
+                  {/* <Tab eventKey="Doughnut" title="Doughnut">
                     <Chart
                       type='Doughnut'
                       backgroundcolor={this.state.chartDataTotalCases.datasets.backgroundColor}
@@ -1050,7 +1071,7 @@ class App extends Component {
                         },
                         maintainAspectRatio: false
                       }} />
-                  </Tab>
+                  </Tab> */}
                 </Tabs>
 
               </div>
@@ -1077,6 +1098,14 @@ class App extends Component {
                           yAxes: [{ display: true }],
                         },
 
+                        
+                        elements: {
+                          point: {
+                            radius: 0
+                          }
+                          },
+
+
                         tooltips: {
 
                           enabled: true,
@@ -1122,7 +1151,7 @@ class App extends Component {
                         maintainAspectRatio: false
                       }} />
                   </Tab>
-                  <Tab eventKey="Doughnut" title="Doughnut">
+                  {/* <Tab eventKey="Doughnut" title="Doughnut">
                     <Chart
                       type='Doughnut'
                       backgroundcolor={this.state.chartDataDeathsVsRecovered.datasets.backgroundColor}
@@ -1153,7 +1182,7 @@ class App extends Component {
                         },
                         maintainAspectRatio: false
                       }} />
-                  </Tab>
+                  </Tab> */}
                 </Tabs>
 
               </div>
@@ -1180,9 +1209,19 @@ class App extends Component {
                         },
                         scales: {
                           yAxes: [{
+                            display:  true,
                             type: 'logarithmic'
-                          }]
-                        }
+                          }],
+                    
+                        },
+
+                        elements: {
+                          point: {
+                            radius: 0
+                          }
+                          },
+
+                        maintainAspectRatio: false
                       }} />
                   </Tab>
                   <Tab eventKey="Bar" title="Bar">
@@ -1203,7 +1242,7 @@ class App extends Component {
                         }
                       }} />
                   </Tab>
-                  <Tab eventKey="Doughnut" title="Doughnut">
+                  {/* <Tab eventKey="Doughnut" title="Doughnut">
                     <Chart
                       type='Doughnut'
                       backgroundcolor={this.state.chartDataActiveCasesLogarithmic.datasets.backgroundColor}
@@ -1220,7 +1259,7 @@ class App extends Component {
                           }]
                         }
                       }} />
-                  </Tab>
+                  </Tab> */}
                 </Tabs>
 
               </div>
@@ -1247,6 +1286,13 @@ class App extends Component {
                           yAxes: [{ display: true }],
                         },
 
+                        elements: {
+                          point: {
+                            radius: 0
+                          }
+                          },
+
+
                         tooltips: {
 
                           enabled: true,
@@ -1292,7 +1338,7 @@ class App extends Component {
                         maintainAspectRatio: false
                       }} />
                   </Tab>
-                  <Tab eventKey="Doughnut" title="Doughnut">
+                  {/* <Tab eventKey="Doughnut" title="Doughnut">
                     <Chart
                       type='Doughnut'
                       backgroundcolor={this.state.chartDataDeathsVsRecovered.datasets.backgroundColor}
@@ -1323,7 +1369,7 @@ class App extends Component {
                         },
                         maintainAspectRatio: false
                       }} />
-                  </Tab>
+                  </Tab> */}
                 </Tabs>
 
               </div>
