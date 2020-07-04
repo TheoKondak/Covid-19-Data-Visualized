@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/Covid-19-Data-Visualized/static/css/main.ad94662c.chunk.css",
-    "main.js": "/Covid-19-Data-Visualized/static/js/main.cbf5ed23.chunk.js",
-    "main.js.map": "/Covid-19-Data-Visualized/static/js/main.cbf5ed23.chunk.js.map",
+    "main.css": "/Covid-19-Data-Visualized/static/css/main.29fa433a.chunk.css",
+    "main.js": "/Covid-19-Data-Visualized/static/js/main.41880767.chunk.js",
+    "main.js.map": "/Covid-19-Data-Visualized/static/js/main.41880767.chunk.js.map",
     "runtime-main.js": "/Covid-19-Data-Visualized/static/js/runtime-main.e0ccd60c.js",
     "runtime-main.js.map": "/Covid-19-Data-Visualized/static/js/runtime-main.e0ccd60c.js.map",
     "static/css/2.de424728.chunk.css": "/Covid-19-Data-Visualized/static/css/2.de424728.chunk.css",
     "static/js/2.408c6e07.chunk.js": "/Covid-19-Data-Visualized/static/js/2.408c6e07.chunk.js",
     "static/js/2.408c6e07.chunk.js.map": "/Covid-19-Data-Visualized/static/js/2.408c6e07.chunk.js.map",
     "index.html": "/Covid-19-Data-Visualized/index.html",
-    "precache-manifest.cbaafb1de6d5a2a2bc4894ba178583c3.js": "/Covid-19-Data-Visualized/precache-manifest.cbaafb1de6d5a2a2bc4894ba178583c3.js",
+    "precache-manifest.236a209414fdf4d6fce0ec619113de71.js": "/Covid-19-Data-Visualized/precache-manifest.236a209414fdf4d6fce0ec619113de71.js",
     "service-worker.js": "/Covid-19-Data-Visualized/service-worker.js",
     "static/css/2.de424728.chunk.css.map": "/Covid-19-Data-Visualized/static/css/2.de424728.chunk.css.map",
-    "static/css/main.ad94662c.chunk.css.map": "/Covid-19-Data-Visualized/static/css/main.ad94662c.chunk.css.map",
+    "static/css/main.29fa433a.chunk.css.map": "/Covid-19-Data-Visualized/static/css/main.29fa433a.chunk.css.map",
     "static/js/2.408c6e07.chunk.js.LICENSE.txt": "/Covid-19-Data-Visualized/static/js/2.408c6e07.chunk.js.LICENSE.txt",
     "static/media/Countrylist.scss": "/Covid-19-Data-Visualized/static/media/globe-europe-solid.1d686c33.svg",
     "static/media/logo.png": "/Covid-19-Data-Visualized/static/media/logo.76a6cc0d.png",
@@ -23,7 +23,7 @@
     "static/js/runtime-main.e0ccd60c.js",
     "static/css/2.de424728.chunk.css",
     "static/js/2.408c6e07.chunk.js",
-    "static/css/main.ad94662c.chunk.css",
-    "static/js/main.cbf5ed23.chunk.js"
+    "static/css/main.29fa433a.chunk.css",
+    "static/js/main.41880767.chunk.js"
   ]
 }
