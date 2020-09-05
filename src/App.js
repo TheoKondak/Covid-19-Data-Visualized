@@ -25,7 +25,7 @@ const green = 'rgba(40, 167, 69,1)';
 class App extends Component {
   state = {
 
-    chartDataTotalCases: {
+    confirmedCases: {
 
       labels: [],
 
@@ -263,7 +263,7 @@ class App extends Component {
 
       this.setState({
         //Default option = Global Data
-        chartDataTotalCases: {
+        confirmedCases: {
 
           labels: globalData.labels,
 
@@ -438,7 +438,7 @@ class App extends Component {
 
     this.setState({
 
-      chartDataConfirmedCases: {
+      confirmedCases: {
 
         labels: labels,
 
@@ -573,7 +573,7 @@ class App extends Component {
 
   render() {
 
-    // console.log(this.state);
+    // console.log(this.state.confirmedCases);
 
     return (
       <div className="container-fluid app-container ">
@@ -606,7 +606,7 @@ class App extends Component {
               <div className=' subHeader  mt-2'>
                 <div className='col-12'>
                   <h3>{this.state.countryName}</h3>
-                  <small>Last Update: {this.state.chartDataTotalCases.labels[this.state.chartDataTotalCases.labels.length - 1]}</small>
+                  <small>Last Update: {this.state.confirmedCases.labels[this.state.confirmedCases.labels.length - 1]}</small>
                 </div>
               </div>
             </div>
@@ -649,7 +649,7 @@ class App extends Component {
 
                         // Chart
                         type='Bar'
-                        data={this.state.chartDataTotalCases}
+                        data={this.state.confirmedCases}
                         options={{
                           legend: {
                             display: false
@@ -948,14 +948,14 @@ class App extends Component {
             <div className='row m-0  chartsContainer'>
 
               <div className='col-lg-5 p-1 chart'>
-
+                {/* TOTAL CASES */}
                 <Tabs defaultActiveKey="Line" id="tabsTotalCases">
                   <Tab eventKey="Line" title="Line">
                     <Chart
                       type='Line'
-                      backgroundcolor={this.state.chartDataTotalCases.datasets.backgroundColor}
-                      label={this.state.chartDataTotalCases.datasets.label}
-                      data={this.state.chartDataTotalCases}
+                      backgroundcolor={this.state.confirmedCases.datasets.backgroundColor}
+                      label={this.state.confirmedCases.datasets.label}
+                      data={this.state.confirmedCases}
                       options={{
                         legend: {
                           title: {
@@ -993,9 +993,9 @@ class App extends Component {
 
                     <Chart
                       type='Bar'
-                      backgroundcolor={this.state.chartDataTotalCases.datasets.backgroundColor}
-                      label={this.state.chartDataTotalCases.datasets.label}
-                      data={this.state.chartDataTotalCases}
+                      backgroundcolor={this.state.confirmedCases.datasets.backgroundColor}
+                      label={this.state.confirmedCases.datasets.label}
+                      data={this.state.confirmedCases}
                       options={{
                         legend: {
                           title: {
@@ -1043,9 +1043,9 @@ class App extends Component {
                   {/* <Tab eventKey="Doughnut" title="Doughnut">
                     <Chart
                       type='Doughnut'
-                      backgroundcolor={this.state.chartDataTotalCases.datasets.backgroundColor}
-                      label={this.state.chartDataTotalCases.datasets.label}
-                      data={this.state.chartDataTotalCases}
+                      backgroundcolor={this.state.confirmedCases.datasets.backgroundColor}
+                      label={this.state.confirmedCases.datasets.label}
+                      data={this.state.confirmedCases}
                       options={{
                         legend: {
                           title: {

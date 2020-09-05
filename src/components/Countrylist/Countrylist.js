@@ -3,7 +3,7 @@ import './Countrylist.scss';
 
 
 const Countrylist = (props) => {
-    // console.log(props)
+    
     return (
         <div className='text-center '>
 
